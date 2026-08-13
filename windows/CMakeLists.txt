@@ -1,3 +1,6 @@
+# Allow compatibility with CMake >= 3.30 for legacy sub-projects like firebase_cpp_sdk
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING "" FORCE)
+
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
 project(super_bike LANGUAGES CXX)
