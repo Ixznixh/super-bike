@@ -1,0 +1,317 @@
+import 'package:flutter/material.dart';
+import '../models/superbike_model.dart';
+import '../theme/app_theme.dart';
+
+class SuperbikeData {
+  static List<Superbike> get initialBikes => [
+    Superbike(
+      id: 'panigale-v4r',
+      name: 'Panigale V4 R',
+      brand: 'Ducati',
+      tagline: 'The Pinnacle of MotoGP Engineering Made Street Legal',
+      year: 2024,
+      priceEstimate: '\$44,995',
+      imageUrl: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1200&q=80',
+      accentColor: AppTheme.neonRed,
+      specs: const TelemetrySpecs(
+        horsepower: 240,
+        torqueNm: 112,
+        topSpeedKmh: 315,
+        acceleration0to100: 2.7,
+        dryWeightKg: 167,
+        powerToWeightRatio: 1.43,
+        rpmRedline: 16500,
+        engineType: 'Desmosedici Stradale R 998cc 90° V4',
+        displacementCc: 998,
+        transmission: '6-speed with Ducati Quick Shift (DQS) Up/Down EVO 2',
+      ),
+      electronics: const ElectronicsPackage(
+        tractionControl: 'DTC EVO 3 (Predictive)',
+        wheelieControl: 'DWC EVO (8 levels)',
+        launchControl: 'DPL EVO (3 levels)',
+        corneringAbs: 'Bosch Cornering ABS EVO',
+        quickshifter: 'DQS EVO 2 Up/Down',
+        suspension: 'Fully Adjustable Öhlins NPX 25/30 Pressurized Fork',
+      ),
+      history: const BrandHistory(
+        foundingYear: 1926,
+        founderName: 'Antonio Cavalieri Ducati',
+        headquarters: 'Bologna, Italy',
+        racingTitles: '15 WSBK World Championships, 4 MotoGP Titles',
+        legendStory:
+            'Founded in Bologna, Ducati transformed from a radio component manufacturer to the undisputed titan of Italian motorcycle racing. Renowned for its unique Desmodromic valve actuation engine timing and trademark trellis frame legacy.',
+        milestones: [
+          MilestoneModel(
+            year: 1972,
+            name: 'Ducati 750 Imola Desmo',
+            description: 'Victory at Imola 200 by Paul Smart put Desmo timing on the global superbike map.',
+          ),
+          MilestoneModel(
+            year: 1994,
+            name: 'Ducati 916',
+            description: 'Designed by Massimo Tamburini, universally acclaimed as the most beautiful motorcycle ever created.',
+          ),
+          MilestoneModel(
+            year: 2018,
+            name: 'Panigale V4',
+            description: 'Replaced the iconic L-twin with a 90-degree Desmosedici V4 derived directly from MotoGP.',
+          ),
+        ],
+      ),
+      highlights: [
+        'Dry clutch assembly for authentic racing acoustic note',
+        'Carbon fiber biplane aero winglets generating 37kg downforce at 300 km/h',
+        'Variable height intake horns boosting top-end power past 16,000 RPM',
+      ],
+      engineNoteDescription: 'Screaming 90° V4 exhaust note with distinct dry clutch rattle at idle.',
+    ),
+
+    Superbike(
+      id: 'ninja-h2r',
+      name: 'Ninja H2R',
+      brand: 'Kawasaki',
+      tagline: 'Supercharged Unrestricted Track Hypersport Weapon',
+      year: 2024,
+      priceEstimate: '\$58,000',
+      imageUrl: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=80',
+      accentColor: AppTheme.neonGreen,
+      specs: const TelemetrySpecs(
+        horsepower: 326,
+        torqueNm: 165,
+        topSpeedKmh: 400,
+        acceleration0to100: 2.2,
+        dryWeightKg: 193,
+        powerToWeightRatio: 1.68,
+        rpmRedline: 14000,
+        engineType: 'Liquid-cooled Inline 4-Cylinder Supercharged',
+        displacementCc: 998,
+        transmission: '6-speed dog-ring transmission',
+      ),
+      electronics: const ElectronicsPackage(
+        tractionControl: 'KTRC (Kawasaki TRaction Control - 9 modes)',
+        wheelieControl: 'KLCM (Launch Control Mode)',
+        launchControl: 'KLCM Integrated',
+        corneringAbs: 'KIBS (Kawasaki Intelligent Anti-lock Brake System)',
+        quickshifter: 'KQS (Kawasaki Quick Shifter)',
+        suspension: 'Öhlins TTX36 Rear Shock & KYB AOS-II Front Fork',
+      ),
+      history: const BrandHistory(
+        foundingYear: 1896,
+        founderName: 'Shozo Kawasaki',
+        headquarters: 'Minato, Tokyo, Japan',
+        racingTitles: '7 WSBK World Championships (6 consecutive with Jonathan Rea)',
+        legendStory:
+            'Kawasaki Heavy Industries leveraged its aerospace and gas turbine divisions to engineer the in-house centrifugal supercharger that powers the H2R, rewriting motorcycle speed boundaries.',
+        milestones: [
+          MilestoneModel(
+            year: 1972,
+            name: 'Kawasaki Z1 (900 Super Four)',
+            description: 'Set world speed records and introduced the 903cc DOHC inline-four legend.',
+          ),
+          MilestoneModel(
+            year: 1984,
+            name: 'GPZ900R Ninja',
+            description: 'The first bike to carry the Ninja badge and the first production bike to top 150 mph.',
+          ),
+          MilestoneModel(
+            year: 2015,
+            name: 'Ninja H2R',
+            description: 'World\'s first production supercharged track superbike topping 400 km/h on the Osman Gazi Bridge.',
+          ),
+        ],
+      ),
+      highlights: [
+        'Proprietary in-house centrifugal supercharger spinning up to 130,000 RPM',
+        'Mirror-coated Silver-Mirror Paint with self-healing topcoat',
+        'Aerodynamic carbon fiber wings designed by Kawasaki Aerospace Company',
+      ],
+      engineNoteDescription: 'Supercharger flutter on gear shifts with raw 326 HP inline-4 roar.',
+    ),
+
+    Superbike(
+      id: 'm1000rr',
+      name: 'M 1000 RR',
+      brand: 'BMW Motorrad',
+      tagline: 'Born on the Track, Tuned by BMW Motorsport M Division',
+      year: 2024,
+      priceEstimate: '\$37,995',
+      imageUrl: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?auto=format&fit=crop&w=1200&q=80',
+      accentColor: AppTheme.bmwBlue,
+      specs: const TelemetrySpecs(
+        horsepower: 212,
+        torqueNm: 113,
+        topSpeedKmh: 314,
+        acceleration0to100: 2.9,
+        dryWeightKg: 170,
+        powerToWeightRatio: 1.24,
+        rpmRedline: 15100,
+        engineType: 'Water/oil-cooled 4-cylinder 4-stroke inline engine with ShiftCam',
+        displacementCc: 999,
+        transmission: 'Constant-mesh 6-speed gearbox with straight cut gears',
+      ),
+      electronics: const ElectronicsPackage(
+        tractionControl: 'DTC (Dynamic Traction Control 6-axis IMU)',
+        wheelieControl: 'DTC Wheelie Function Adjustable',
+        launchControl: 'Pit Lane Limiter & Launch Control',
+        corneringAbs: 'ABS Pro with Race ABS settings',
+        quickshifter: 'Shift Assistant Pro (Up & Down)',
+        suspension: 'Marzocchi 45mm Upside-Down Fork with DDC Dynamic Damping',
+      ),
+      history: const BrandHistory(
+        foundingYear: 1923,
+        founderName: 'Max Friz & Karl Rapp',
+        headquarters: 'Munich, Germany',
+        racingTitles: 'Isle of Man TT Winner, German IDM Championships',
+        legendStory:
+            'BMW Motorrad made history in 1923 with the R32. In 2009, they disrupted the Japanese-dominated superbike segment with the S1000RR, culminating in the ultra-exclusive M Division badged M 1000 RR.',
+        milestones: [
+          MilestoneModel(
+            year: 1939,
+            name: 'BMW Kompressor (RS 255)',
+            description: 'Georg Meier became the first non-British rider to win the Senior Isle of Man TT.',
+          ),
+          MilestoneModel(
+            year: 2009,
+            name: 'BMW S 1000 RR',
+            description: 'Set a new benchmark with 193 HP and class-leading electronic traction control.',
+          ),
+          MilestoneModel(
+            year: 2021,
+            name: 'BMW M 1000 RR',
+            description: 'The first-ever motorcycle to receive the prestigious BMW M badge treatment.',
+          ),
+        ],
+      ),
+      highlights: [
+        'BMW ShiftCam technology varying valve timing and stroke above 9,000 RPM',
+        'M Carbon wheels and M Brakes engineered in collaboration with Nissin',
+        'M Aero Winglets producing 22.6 kg downforce at high speed',
+      ],
+      engineNoteDescription: 'Crisp precision inline-4 exhaust with distinct ShiftCam intake acoustic transition.',
+    ),
+
+    Superbike(
+      id: 'yzf-r1m',
+      name: 'YZF-R1M',
+      brand: 'Yamaha',
+      tagline: 'Crossplane Crankshaft Technology Inspired by Valentino Rossi\'s YZR-M1',
+      year: 2024,
+      priceEstimate: '\$27,699',
+      imageUrl: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1200&q=80',
+      accentColor: AppTheme.electricCyan,
+      specs: const TelemetrySpecs(
+        horsepower: 200,
+        torqueNm: 112,
+        topSpeedKmh: 299,
+        acceleration0to100: 2.8,
+        dryWeightKg: 177,
+        powerToWeightRatio: 1.13,
+        rpmRedline: 14500,
+        engineType: 'Crossplane CP4 998cc Inline 4-Cylinder',
+        displacementCc: 998,
+        transmission: '6-speed multi-plate slipper clutch',
+      ),
+      electronics: const ElectronicsPackage(
+        tractionControl: 'TCS (Traction Control System lean-angle sensitive)',
+        wheelieControl: 'LIF (Lift Control System)',
+        launchControl: 'LCS (Launch Control System)',
+        corneringAbs: 'BC (Brake Control System)',
+        quickshifter: 'QSS (Quick Shift System 2-way)',
+        suspension: 'Öhlins Electronic Racing Suspension (ERS NPX)',
+      ),
+      history: const BrandHistory(
+        foundingYear: 1955,
+        founderName: 'Genichi Kawakami',
+        headquarters: 'Iwata, Shizuoka, Japan',
+        racingTitles: '18 MotoGP World Championship Titles',
+        legendStory:
+            'Yamaha Motor Corporation revolutionized motorcycle balance and traction by developing the crossplane engine layout for MotoGP icon Valentino Rossi, delivering uneven firing order for linear torque output.',
+        milestones: [
+          MilestoneModel(
+            year: 1978,
+            name: 'Yamaha TZ750',
+            description: 'Dominated 750cc racing and Daytona 200 with Kenny Roberts.',
+          ),
+          MilestoneModel(
+            year: 1998,
+            name: 'Yamaha YZF-R1 (Original)',
+            description: 'Redefined superbike power-to-weight ratio with stacked gearbox shafts.',
+          ),
+          MilestoneModel(
+            year: 2009,
+            name: 'R1 Crossplane (CP4)',
+            description: 'First production bike with 270°-180°-90°-180° crossplane firing order.',
+          ),
+        ],
+      ),
+      highlights: [
+        'Distinctive CP4 crossplane firing order (270°-180°-90°-180°) mimicking V4 power delivery',
+        'Carbon fiber bodywork and aluminum deltabox frame',
+        'Communication Control Unit (CCU) with wireless data logging for lap telemetry',
+      ],
+      engineNoteDescription: 'Throaty, deep guttural V4-like growl from crossplane CP4 technology.',
+    ),
+
+    Superbike(
+      id: 'f4-claudio',
+      name: 'F4 1000 Claudio',
+      brand: 'MV Agusta',
+      tagline: 'Motorcycle Art: The Ultimate Tribute to Claudio Castiglioni',
+      year: 2023,
+      priceEstimate: '\$83,000',
+      imageUrl: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=80',
+      accentColor: AppTheme.vividGold,
+      specs: const TelemetrySpecs(
+        horsepower: 212,
+        torqueNm: 115,
+        topSpeedKmh: 302,
+        acceleration0to100: 2.8,
+        dryWeightKg: 175,
+        powerToWeightRatio: 1.21,
+        rpmRedline: 14200,
+        engineType: 'Corsa Corta 4-cylinder inline with radial valves',
+        displacementCc: 998,
+        transmission: '6-speed cassette-type gearbox with EAS 2.0 electronic quickshifter',
+      ),
+      electronics: const ElectronicsPackage(
+        tractionControl: 'MVICS 2.0 (Motor & Vehicle Integrated Control System)',
+        wheelieControl: 'Customizable Anti-Wheelie',
+        launchControl: 'Integrated Launch Assist',
+        corneringAbs: 'Bosch 9 Plus Race Mode ABS',
+        quickshifter: 'EAS 2.0 Up & Down Shift',
+        suspension: 'Öhlins NIX30 fork & Öhlins TTX36 rear shock with DLC coating',
+      ),
+      history: const BrandHistory(
+        foundingYear: 1945,
+        founderName: 'Count Domenico Agusta',
+        headquarters: 'Varese, Italy',
+        racingTitles: '38 World Rider Championships (Giacomo Agostini 15 World Titles)',
+        legendStory:
+            'MV Agusta is motorcycle royalty. With 270 Grand Prix race wins and 38 World Titles under racing icon Giacomo Agostini, MV Agusta stands as the most prestigious name in Italian motorcycle history.',
+        milestones: [
+          MilestoneModel(
+            year: 1968,
+            name: 'MV Agusta 500 Three',
+            description: 'Dominated GP racing under Giacomo Agostini, winning 7 consecutive 500cc titles.',
+          ),
+          MilestoneModel(
+            year: 1997,
+            name: 'MV Agusta F4 750',
+            description: 'Designed by Massimo Tamburini with signature quad organ-pipe under-tail exhausts.',
+          ),
+          MilestoneModel(
+            year: 2018,
+            name: 'F4 Claudio',
+            description: 'Limited edition of only 100 units featuring full carbon fiber wheels and titanium SC-Project exhausts.',
+          ),
+        ],
+      ),
+      highlights: [
+        'Full carbon fiber wheels, bodywork, and titanium fasteners throughout',
+        'Radial valve arrangement in combustion chamber derived from Ferrari Formula 1 engineering',
+        'Quad pipe titanium SC-Project exhaust system featuring laser-etched Claudio signature',
+      ],
+      engineNoteDescription: 'High-pitched F1-inspired screaming exhaust note from radial valves.',
+    ),
+  ];
+}
