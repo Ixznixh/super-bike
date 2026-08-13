@@ -34,7 +34,7 @@ class SuperbikeData {
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Antonio Cavalieri Ducati', headquarters: 'Bologna, Italy 🇮🇹',
         racingTitles: '15 WSBK World Championships, 4 MotoGP Titles',
-        legendStory: 'Founded in Bologna, Ducati transformed into the titan of Italian motorcycle racing.',
+        legendStory: 'Official Ducati Press: Homologated MotoGP engine technology for street and track supremacy.',
         milestones: [MilestoneModel(year: 2024, name: 'Panigale V4 R', description: '240 HP homologated racer.')],
       ),
       highlights: ['Carbon fiber aero winglets', 'Dry clutch assembly', 'Variable intake horns'],
@@ -63,7 +63,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1923, founderName: 'Max Friz', headquarters: 'Munich, Germany 🇩🇪',
-        racingTitles: 'Isle of Man TT Winner', legendStory: 'BMW Motorrad engineered the iconic ShiftCam inline-4.',
+        racingTitles: 'Isle of Man TT Winner', legendStory: 'Official BMW Motorrad Press: M Motorsport winglets and ShiftCam technology.',
         milestones: [MilestoneModel(year: 2024, name: 'M 1000 RR', description: 'M Motorsport Superbike.')],
       ),
       highlights: ['BMW ShiftCam Technology', 'M Carbon Wheels', 'M Aero Winglets'],
@@ -93,7 +93,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1945, founderName: 'Alberto Beggio', headquarters: 'Noale, Italy 🇮🇹',
-        racingTitles: '54 World Titles (WSBK & GP)', legendStory: 'Aprilia dominates lightweight & superbike racing with V4 tech.',
+        racingTitles: '54 World Titles (WSBK & GP)', legendStory: 'Official Aprilia Racing Press: 54 World Titles born in Noale, Italy.',
         milestones: [MilestoneModel(year: 2024, name: 'RSV4 Factory', description: '217 HP 1,099cc V4 Superbike.')],
       ),
       highlights: ['Integrated winglet fairing', 'Öhlins Smart EC 2.0 suspension', 'Lightweight forged aluminum wheels'],
@@ -122,7 +122,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Antonio Ducati', headquarters: 'Bologna, Italy 🇮🇹',
-        racingTitles: '15 WSBK Titles', legendStory: 'The Panigale V4 S delivers electronic Öhlins suspension and MotoGP tech.',
+        racingTitles: '15 WSBK Titles', legendStory: 'Official Ducati Press: Desmosedici V4 engine paired with electronic Öhlins Smart EC suspension.',
         milestones: [MilestoneModel(year: 2024, name: 'Panigale V4 S', description: '1,103cc V4 Street Legal Weapon.')],
       ),
       highlights: ['Öhlins Smart EC 2.0 electronic suspension', 'Marchesini forged aluminum wheels', 'Desmosedici V4 engine'],
@@ -151,7 +151,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1896, founderName: 'Shozo Kawasaki', headquarters: 'Minato, Tokyo, Japan 🇯🇵',
-        racingTitles: '7 WSBK Championships', legendStory: 'Kawasaki built an in-house supercharger for 400 km/h speeds.',
+        racingTitles: '7 WSBK Championships', legendStory: 'Official Kawasaki Press: Centrifugal supercharger engineered by Kawasaki Heavy Industries Aerospace.',
         milestones: [MilestoneModel(year: 2024, name: 'Ninja H2R', description: '326 HP supercharged track monster.')],
       ),
       highlights: ['Centrifugal supercharger spinning at 130k RPM', 'Carbon aero wings', 'Silver mirror self-healing paint'],
@@ -181,7 +181,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1948, founderName: 'Soichiro Honda', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: '800+ Grand Prix Wins', legendStory: 'Honda Fireblade redefined superbike handling in 1992.',
+        racingTitles: '800+ Grand Prix Wins', legendStory: 'Official Honda HRC Press: RC213V-S MotoGP titanium engine architecture.',
         milestones: [MilestoneModel(year: 2024, name: 'CBR1000RR-R SP', description: 'RC213V-S MotoGP engine tech.')],
       ),
       highlights: ['RC213V-S MotoGP titanium conrods', 'Brembo Stylema calipers', 'Öhlins Smart EC suspension'],
@@ -210,7 +210,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1923, founderName: 'Karl Rapp', headquarters: 'Munich, Germany 🇩🇪',
-        racingTitles: 'WSBK & Isle of Man TT', legendStory: 'BMW redefined modern superbike electronics in 2009 with S1000RR.',
+        racingTitles: 'WSBK & Isle of Man TT', legendStory: 'Official BMW Motorrad Press: ShiftCam variable valve timing benchmark.',
         milestones: [MilestoneModel(year: 2024, name: 'S 1000 RR', description: '205 HP ShiftCam superbike.')],
       ),
       highlights: ['ShiftCam variable valve timing', 'Winglet aerodynamic downforce', 'Flex Frame chassis'],
@@ -239,7 +239,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1896, founderName: 'Kawasaki', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: '6 Consecutive WSBK Titles', legendStory: 'Jonathan Rea dominated World Superbike aboard the ZX-10RR.',
+        racingTitles: '6 Consecutive WSBK Titles', legendStory: 'Official Kawasaki Press: Pankl titanium connecting rods & Marchesini forged rims.',
         milestones: [MilestoneModel(year: 2024, name: 'ZX-10RR', description: 'Pankl titanium rods & Marchesini rims.')],
       ),
       highlights: ['Pankl titanium connecting rods', 'Marchesini forged wheels', 'Aerodynamic integrated winglets'],
@@ -268,7 +268,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Ducati', headquarters: 'Bologna, Italy 🇮🇹',
-        racingTitles: 'MotoGP World Champions', legendStory: 'The Fight Formula: Panigale V4 stripped naked with biplane wings.',
+        racingTitles: 'MotoGP World Champions', legendStory: 'Official Ducati Press: Carbon rims and STM SBK dry clutch in Winter Test livery.',
         milestones: [MilestoneModel(year: 2024, name: 'Streetfighter SP2', description: 'Carbon rims & STM dry clutch.')],
       ),
       highlights: ['STM-EVO SBK dry clutch', 'Carbon fiber rims', 'Winter Test livery'],
@@ -297,7 +297,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1955, founderName: 'Genichi Kawakami', headquarters: 'Iwata, Japan 🇯🇵',
-        racingTitles: '18 MotoGP World Titles', legendStory: 'Crossplane firing order developed for Valentino Rossi\'s YZR-M1.',
+        racingTitles: '18 MotoGP World Titles', legendStory: 'Official Yamaha Racing Press: Carbon bodywork and Öhlins ERS inspired by MotoGP YZR-M1.',
         milestones: [MilestoneModel(year: 2024, name: 'YZF-R1M', description: 'Carbon bodywork & Öhlins ERS.')],
       ),
       highlights: ['CP4 crossplane firing order (270°-180°-90°-180°)', 'Carbon bodywork', 'CCU telemetry telemetry logger'],
@@ -326,7 +326,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1945, founderName: 'Domenico Agusta', headquarters: 'Varese, Italy 🇮🇹',
-        racingTitles: '38 World Rider Championships', legendStory: 'MV Agusta: Motorcycle Art with Ferrari F1 radial valve head.',
+        racingTitles: '38 World Rider Championships', legendStory: 'Official MV Agusta Press: Motorcycle Art with Ferrari F1 radial valve head.',
         milestones: [MilestoneModel(year: 2024, name: 'Brutale 1000 RR', description: '208 HP hyper naked artwork.')],
       ),
       highlights: ['Ferrari F1 radial valve arrangement', 'Öhlins electronic suspension', 'Full carbon fiber body panels'],
@@ -355,7 +355,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1945, founderName: 'Count Agusta', headquarters: 'Varese, Italy 🇮🇹',
-        racingTitles: '38 World Titles', legendStory: 'Rush 1000 inspired by drag strip racing and fighter jets.',
+        racingTitles: '38 World Titles', legendStory: 'Official MV Agusta Press: Limited edition 300 unit drag racing concept bike.',
         milestones: [MilestoneModel(year: 2024, name: 'Rush 1000', description: 'Limited edition 300 units drag concept.')],
       ),
       highlights: ['Carbon rear wheel cover disc', 'SC Project dual exhaust', 'Fighter jet LED headlight'],
@@ -384,7 +384,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Ducati', headquarters: 'Bologna, Italy 🇮🇹',
-        racingTitles: 'WSBK Champions', legendStory: 'The original Fight Formula hyper naked with biplane wings.',
+        racingTitles: 'WSBK Champions', legendStory: 'Official Ducati Press: The Fight Formula stripping the Panigale fairing and adding biplane wings.',
         milestones: [MilestoneModel(year: 2024, name: 'Streetfighter V4', description: '208 HP Desmosedici V4 Naked.')],
       ),
       highlights: ['Biplane aerodynamic wings (28kg downforce)', 'Desmosedici Stradale V4', 'High handlebar ergonomics'],
@@ -413,7 +413,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1945, founderName: 'Aprilia', headquarters: 'Noale, Italy 🇮🇹',
-        racingTitles: '54 World Titles', legendStory: 'World Superbike Champion chassis and V4 power.',
+        racingTitles: '54 World Titles', legendStory: 'Official Aprilia Racing Press: 65° V4 architecture delivering 217 HP.',
         milestones: [MilestoneModel(year: 2024, name: 'RSV4 1100', description: '217 HP V4 Superbike.')],
       ),
       highlights: ['1,099cc 65° V4 engine', 'Dual layer winglet fairing', 'Aprilia Race ABS'],
@@ -442,7 +442,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1923, founderName: 'BMW', headquarters: 'Munich, Germany 🇩🇪',
-        racingTitles: 'BMW M Motorsport', legendStory: 'The M 1000 R brings 210 HP ShiftCam power to hyper roadsters.',
+        racingTitles: 'BMW M Motorsport', legendStory: 'Official BMW Motorrad Press: 210 HP M Roadster with M winglets.',
         milestones: [MilestoneModel(year: 2024, name: 'M 1000 R', description: '210 HP M Roadster.')],
       ),
       highlights: ['M Winglets generating 11kg downforce', 'ShiftCam engine', 'M Brakes & M Forged wheels'],
@@ -471,7 +471,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1896, founderName: 'Kawasaki', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: 'WSBK Champions', legendStory: 'The ZX-10R has been the cornerstone of Kawasaki superbike racing.',
+        racingTitles: 'WSBK Champions', legendStory: 'Official Kawasaki Racing Press: Showa BFF fork & cowl integrated winglets.',
         milestones: [MilestoneModel(year: 2024, name: 'Ninja ZX-10R', description: '203 HP Ninja Superbike.')],
       ),
       highlights: ['Integrated cowl winglets', 'Showa BFF pressurized fork', 'Electronic Cruise Control'],
@@ -500,7 +500,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1909, founderName: 'Michio Suzuki', headquarters: 'Hamamatsu, Shizuoka, Japan 🇯🇵',
-        racingTitles: 'MotoGP World Champions & EWC', legendStory: 'Own the Racetrack: The GSX-R line defined sportbikes since 1985.',
+        racingTitles: 'MotoGP World Champions & EWC', legendStory: 'Official Suzuki Press: Suzuki Racing Variable Valve Timing (SR-VVT) technology.',
         milestones: [MilestoneModel(year: 2024, name: 'GSX-R1000R', description: 'Variable Valve Timing (SR-VVT) tech.')],
       ),
       highlights: ['Broad Powerband SR-VVT Variable Valve Timing', 'Showa BFF suspension', 'Brembo monoblock radial calipers'],
@@ -529,7 +529,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Ducati', headquarters: 'Bologna, Italy 🇮🇹',
-        racingTitles: 'WSBK Supersport Champions', legendStory: 'The continuation of Ducati\'s legendary twin-cylinder superbike heritage.',
+        racingTitles: 'WSBK Supersport Champions', legendStory: 'Official Ducati Press: Superquadro L-twin twin-cylinder superbike heritage.',
         milestones: [MilestoneModel(year: 2024, name: 'Panigale V2', description: '155 HP L-twin middleweight superbike.')],
       ),
       highlights: ['Superquadro L-twin engine', 'Single-sided aluminum swingarm', 'Panigale V4 inspired styling'],
@@ -558,7 +558,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1955, founderName: 'Yamaha', headquarters: 'Iwata, Japan 🇯🇵',
-        racingTitles: 'MotoGP World Champions', legendStory: 'The legendary R1 that started the crossplane superbike era.',
+        racingTitles: 'MotoGP World Champions', legendStory: 'Official Yamaha Racing Press: Deltabox aluminum frame with CP4 crossplane technology.',
         milestones: [MilestoneModel(year: 2024, name: 'YZF-R1', description: '200 HP CP4 Superbike.')],
       ),
       highlights: ['Crossplane CP4 engine', 'Deltabox aluminum frame', 'Magnesium wheels'],
@@ -587,7 +587,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1948, founderName: 'Soichiro Honda', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: '800+ GP Victories', legendStory: 'The standard Fireblade carrying MotoGP aerodynamics and engineering.',
+        racingTitles: '800+ GP Victories', legendStory: 'Official Honda Press: Grand Prix Red livery and MotoGP aerodynamics.',
         milestones: [MilestoneModel(year: 2024, name: 'Fireblade Standard', description: '215 HP Track Superbike.')],
       ),
       highlights: ['MotoGP aerodynamic winglets', 'Titanium connecting rods', 'TFT display'],
@@ -616,7 +616,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1909, founderName: 'Michio Suzuki', headquarters: 'Hamamatsu, Japan 🇯🇵',
-        racingTitles: 'World Speed Record Holder', legendStory: 'Named after the Peregrine Falcon, Hayabusa became the ultimate hyperbike legend in 1999.',
+        racingTitles: 'World Speed Record Holder', legendStory: 'Official Suzuki Press: Peregrine Falcon aerodynamic silhouette with 1,340cc engine.',
         milestones: [MilestoneModel(year: 2024, name: 'Hayabusa Gen 3', description: '1,340cc Ultimate Sportbike.')],
       ),
       highlights: ['Massive 150 Nm low-end torque', 'Iconic aerodynamic body silhouette', 'SIRS electronic riding suite'],
@@ -645,7 +645,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1896, founderName: 'Kawasaki', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: 'Supercharged Pioneers', legendStory: 'Balanced Supercharger technology for long-distance supercharged sports touring.',
+        racingTitles: 'Supercharged Pioneers', legendStory: 'Official Kawasaki Press: Balanced Supercharger engine with ARAS Radar collision detection.',
         milestones: [MilestoneModel(year: 2024, name: 'H2 SX SE', description: 'Supercharged Sports Tourer with Radar.')],
       ),
       highlights: ['ARAS Radar Front/Rear Collision Warning', 'Balanced Supercharger engine', 'KECS semi-active electronic suspension'],
@@ -674,7 +674,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Ducati', headquarters: 'Bologna, Italy 🇮🇹',
-        racingTitles: 'Italian Racing Heritage', legendStory: 'Streetfighter attitude with mid-weight 153 HP Superquadro V2 punch.',
+        racingTitles: 'Italian Racing Heritage', legendStory: 'Official Ducati Press: Panigale V2 performance stripped into a lightweight hyper naked.',
         milestones: [MilestoneModel(year: 2024, name: 'Streetfighter V2', description: '153 HP L-twin hyper naked.')],
       ),
       highlights: ['Panigale V2 ergonomics without fairings', 'Single-sided swingarm', 'High handlebar upright posture'],
@@ -703,7 +703,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1934, founderName: 'Johann Trunkenpolz', headquarters: 'Mattighofen, Austria 🇦🇹',
-        racingTitles: '300+ Dakar & Offroad/MotoGP Titles', legendStory: 'READY TO RACE: KTM created "The Beast" LC8 V-twin hyper naked.',
+        racingTitles: '300+ Dakar & Offroad/MotoGP Titles', legendStory: 'Official KTM Press: "The Beast" 1,350cc LC8 V-twin with WP APEX SAT suspension.',
         milestones: [MilestoneModel(year: 2024, name: '1390 Super Duke R EVO', description: '1,350cc 190 HP LC8 V-twin monster.')],
       ),
       highlights: ['WP APEX 3rd Gen Semi-Active suspension', '145 Nm V-twin torque', 'Camshift variable valve timing'],
@@ -732,7 +732,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1902, founderName: 'Siegfried Bettmann', headquarters: 'Hinckley, Leicestershire, UK 🇬🇧',
-        racingTitles: 'Moto2 Exclusive Engine Supplier', legendStory: 'The original hooligan roadster created in 1994, powered by Moto2 triple engine heritage.',
+        racingTitles: 'Moto2 Exclusive Engine Supplier', legendStory: 'Official Triumph Press: Moto2 engine development team engineering for ultimate roadster performance.',
         milestones: [MilestoneModel(year: 2024, name: 'Speed Triple 1200 RS', description: '180 HP 1,160cc Triple Roadster.')],
       ),
       highlights: ['Moto2 engine design team development', 'Öhlins fully adjustable suspension', 'Metzeler Racetec RR tires'],
@@ -761,7 +761,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1902, founderName: 'Triumph', headquarters: 'Hinckley, UK 🇬🇧',
-        racingTitles: 'Isle of Man TT & Moto2', legendStory: 'Daytona name returns with a high-revving 660cc triple engine.',
+        racingTitles: 'Isle of Man TT & Moto2', legendStory: 'Official Triumph Press: The iconic Daytona supersport name returns powered by a 660cc triple.',
         milestones: [MilestoneModel(year: 2024, name: 'Daytona 660', description: '95 HP Triple Middleweight Sportbike.')],
       ),
       highlights: ['High-revving 660cc triple engine', 'Showa Big Piston forks', '3 Riding Modes (Sport, Road, Rain)'],
@@ -790,7 +790,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1934, founderName: 'KTM', headquarters: 'Mattighofen, Austria 🇦🇹',
-        racingTitles: 'MotoGP Race Winners', legendStory: 'KTM\'s return to street legal supersport fairing superbikes.',
+        racingTitles: 'MotoGP Race Winners', legendStory: 'Official KTM Press: Wind-tunnel developed MotoGP winglets and LC8c engine.',
         milestones: [MilestoneModel(year: 2025, name: '990 RC R', description: '128 HP LC8c Parallel Twin Supersport.')],
       ),
       highlights: ['Wind-tunnel tested MotoGP winglets', 'Ergonomic adjustable footpegs', 'WP APEX fully adjustable suspension'],
@@ -819,7 +819,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1945, founderName: 'Aprilia', headquarters: 'Noale, Italy 🇮🇹',
-        racingTitles: 'WSBK & GP Champions', legendStory: 'Tuono: The legendary thunderstorm hyper naked derived directly from the RSV4.',
+        racingTitles: 'WSBK & GP Champions', legendStory: 'Official Aprilia Racing Press: RSV4 superbike chassis with upright handlebar ergonomics.',
         milestones: [MilestoneModel(year: 2024, name: 'Tuono V4 Factory', description: '175 HP Öhlins Smart EC Hyper Naked.')],
       ),
       highlights: ['Öhlins Smart EC 2.0 semi-active suspension', 'RSV4 chassis geometry', 'Aerodynamic winglet fairing'],
@@ -848,7 +848,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Ducati', headquarters: 'Bologna, Italy 🇮🇹',
-        racingTitles: 'Italian Racing Heritage', legendStory: 'SuperSport blends Panigale elegance with road comfort and Testastretta twin power.',
+        racingTitles: 'Italian Racing Heritage', legendStory: 'Official Ducati Press: Testastretta 11° L-twin engine paired with Öhlins suspension.',
         milestones: [MilestoneModel(year: 2024, name: 'SuperSport 950 S', description: '110 HP Öhlins equipped sports tourer.')],
       ),
       highlights: ['Öhlins fully adjustable suspension', 'Panigale style LED DRL headlight', 'Height-adjustable windscreen'],
@@ -877,7 +877,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1923, founderName: 'BMW', headquarters: 'Munich, Germany 🇩🇪',
-        racingTitles: 'Superbike Heritage', legendStory: 'S 1000 R brings S 1000 RR superbike genes to the roadster segment.',
+        racingTitles: 'Superbike Heritage', legendStory: 'Official BMW Motorrad Press: S 1000 RR superbike engine scaled for roadster agility.',
         milestones: [MilestoneModel(year: 2024, name: 'S 1000 R', description: '165 HP Dynamic Roadster.')],
       ),
       highlights: ['Lightweight Flex Frame', 'M Package options available', 'TFT display with connectivity'],
@@ -906,7 +906,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1896, founderName: 'Kawasaki', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: 'Supercharged Dominance', legendStory: 'Sugomi design meets supercharged performance in the Z H2 SE hyper naked.',
+        racingTitles: 'Supercharged Dominance', legendStory: 'Official Kawasaki Press: KECS semi-active electronic suspension with Showa Skyhook tech.',
         milestones: [MilestoneModel(year: 2024, name: 'Z H2 SE', description: '200 HP Supercharged Z flagship.')],
       ),
       highlights: ['KECS semi-active suspension with Skyhook', 'Brembo Stylema calipers', 'Balanced Supercharger'],
@@ -935,7 +935,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1896, founderName: 'Kawasaki', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: 'Z Legend Series', legendStory: 'Z900 SE carries forward Z1 legacy with Öhlins rear shock and Brembo brakes.',
+        racingTitles: 'Z Legend Series', legendStory: 'Official Kawasaki Press: Öhlins S46 rear shock & Brembo M4.32 monoblock calipers.',
         milestones: [MilestoneModel(year: 2024, name: 'Z900 SE', description: '125 HP Öhlins Special Edition.')],
       ),
       highlights: ['Öhlins S46 rear shock absorber', 'Brembo M4.32 monoblock calipers', 'Sugomi aggressive styling'],
@@ -964,7 +964,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1902, founderName: 'Triumph', headquarters: 'Hinckley, UK 🇬🇧',
-        racingTitles: 'Exclusive Moto2 Engine Supplier', legendStory: 'Engineered directly by the team behind Triumph\'s Moto2 race engines.',
+        racingTitles: 'Exclusive Moto2 Engine Supplier', legendStory: 'Official Triumph Press: Powered directly by Moto2 race engine team specifications.',
         milestones: [MilestoneModel(year: 2024, name: 'Street Triple 765 RS', description: '130 HP Moto2 spec middleweight benchmark.')],
       ),
       highlights: ['Moto2 engine development specs', 'Brembo Stylema brakes', 'Öhlins STX40 rear shock'],
@@ -993,7 +993,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1945, founderName: 'Aprilia', headquarters: 'Noale, Italy 🇮🇹',
-        racingTitles: '54 World Titles', legendStory: 'RS 660 created the lightweight twin supersport era with RSV4 derived front cylinder bank.',
+        racingTitles: '54 World Titles', legendStory: 'Official Aprilia Racing Press: RSV4 derived cylinder head and Öhlins suspension.',
         milestones: [MilestoneModel(year: 2024, name: 'RS 660 Factory', description: '100 HP Öhlins equipped parallel twin.')],
       ),
       highlights: ['RSV4 derived front cylinder bank engine', 'Öhlins suspension', 'Dual fairing aerodynamic airflow'],
@@ -1022,7 +1022,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1955, founderName: 'Yamaha', headquarters: 'Iwata, Japan 🇯🇵',
-        racingTitles: 'Supersport Champions', legendStory: 'R-Series styling powered by the ultra-reliable CP2 crossplane concept twin.',
+        racingTitles: 'Supersport Champions', legendStory: 'Official Yamaha Racing Press: Slim ergonomics with 270° CP2 crossplane concept engine.',
         milestones: [MilestoneModel(year: 2024, name: 'Yamaha R7', description: '73 HP CP2 Supersport.')],
       ),
       highlights: ['270° crossplane concept CP2 twin', 'Slimmest R-series bodywork', 'Inverted front fork'],
@@ -1051,7 +1051,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Miguel Galluzzi (Designer)', headquarters: 'Bologna, Italy 🇮🇹',
-        racingTitles: 'Naked Bike Legend', legendStory: 'Designed by Miguel Galluzzi in 1993: "All you need is a seat, tank, engine, two wheels, and handlebars."',
+        racingTitles: 'Naked Bike Legend', legendStory: 'Official Ducati Press: Aluminum Front Frame inspired by Panigale V4.',
         milestones: [MilestoneModel(year: 2024, name: 'Monster 937', description: '111 HP lightweight aluminum Front Frame.')],
       ),
       highlights: ['Panigale V4 derived Front Frame', 'Testastretta 11° engine', 'Weight reduced to 166 kg dry'],
@@ -1080,7 +1080,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1948, founderName: 'Honda', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: 'Honda CB & CBR Heritage', legendStory: 'Honda introduced world\'s first electronic E-Clutch automatic manual shifting on CBR650R.',
+        racingTitles: 'Honda CB & CBR Heritage', legendStory: 'Official Honda Press: World\'s first motorcycle with Honda E-Clutch automatic clutch control.',
         milestones: [MilestoneModel(year: 2024, name: 'CBR650R E-Clutch', description: 'First motorcycle with Honda E-Clutch.')],
       ),
       highlights: ['Honda E-Clutch electronic clutch system', 'Inline-4 middleweight engine', 'Showa SFF-BP USD fork'],
@@ -1109,7 +1109,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1896, founderName: 'Kawasaki', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: 'WorldSSP Champion', legendStory: 'The 636cc engine capacity gives ZX-6R superior street mid-range torque over standard 600s.',
+        racingTitles: 'WorldSSP Champion', legendStory: 'Official Kawasaki Press: 636cc displacement providing 124 HP and street mid-range performance.',
         milestones: [MilestoneModel(year: 2024, name: 'Ninja ZX-6R 636', description: '124 HP 636cc Supersport.')],
       ),
       highlights: ['636cc displacement advantage', 'Showa Separate Function Big Piston fork', 'TFT display with Riding Modes'],
@@ -1138,7 +1138,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1955, founderName: 'Yamaha', headquarters: 'Iwata, Japan 🇯🇵',
-        racingTitles: '10+ WorldSSP Titles', legendStory: 'The most successful middleweight supersport bike in WorldSSP history.',
+        racingTitles: '10+ WorldSSP Titles', legendStory: 'Official Yamaha Racing Press: Unrestricted 16,000 RPM track edition.',
         milestones: [MilestoneModel(year: 2024, name: 'R6 Race', description: 'Unrestricted 16,000 RPM track edition.')],
       ),
       highlights: ['Titanium valves & YCC-I variable intake', 'R1-derived KYB 43mm front fork', 'Deltabox aluminum frame'],
@@ -1167,7 +1167,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1948, founderName: 'Honda', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: 'Exclusive Moto2 Engine Supplier (2010-2018)', legendStory: 'Powered the entire Moto2 World Championship grid for 9 consecutive seasons.',
+        racingTitles: 'Exclusive Moto2 Engine Supplier (2010-2018)', legendStory: 'Official Honda HRC Press: Moto2 engine heritage and MotoGP winglets.',
         milestones: [MilestoneModel(year: 2024, name: 'CBR600RR', description: 'MotoGP aerodynamic winglets & 6-axis IMU.')],
       ),
       highlights: ['MotoGP aerodynamic winglets', '6-axis IMU electronics', 'Center-exit under-tail exhaust'],
@@ -1196,7 +1196,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1909, founderName: 'Suzuki', headquarters: 'Hamamatsu, Japan 🇯🇵',
-        racingTitles: 'MotoGP Champions', legendStory: 'Suzuki Cross Balancer 270° parallel twin engine architecture.',
+        racingTitles: 'MotoGP Champions', legendStory: 'Official Suzuki Press: Suzuki Cross Balancer 270° parallel twin architecture.',
         milestones: [MilestoneModel(year: 2024, name: 'GSX-8R', description: '776cc parallel twin sportbike.')],
       ),
       highlights: ['Suzuki Cross Balancer for smooth V-twin torque', 'Showa SFF-BP suspension', 'Bi-directional quickshifter standard'],
@@ -1225,7 +1225,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1896, founderName: 'Kawasaki', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: 'Ninja Family', legendStory: 'The versatile mid-weight Ninja offering daily comfort and sport styling.',
+        racingTitles: 'Ninja Family', legendStory: 'Official Kawasaki Press: Everyday sport ergonomics with KTRC Traction Control.',
         milestones: [MilestoneModel(year: 2024, name: 'Ninja 650', description: 'TFT Display & KTRC Traction Control.')],
       ),
       highlights: ['Kawasaki TRaction Control (KTRC)', 'TFT color display with Bluetooth', 'Assist & Slipper Clutch'],
@@ -1254,7 +1254,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1955, founderName: 'Yamaha', headquarters: 'Iwata, Japan 🇯🇵',
-        racingTitles: 'R-Series Legacy', legendStory: 'The new flagship middleweight supersport powered by the torque-rich CP3 triple.',
+        racingTitles: 'R-Series Legacy', legendStory: 'Official Yamaha Racing Press: Next generation supersport with CP3 crossplane concept engine.',
         milestones: [MilestoneModel(year: 2025, name: 'Yamaha R9', description: '890cc CP3 Supersport with MotoGP winglets.')],
       ),
       highlights: ['MotoGP-derived aerodynamic winglets', 'CP3 crossplane concept triple engine', 'Lightweight gravity-cast aluminum frame'],
@@ -1266,7 +1266,7 @@ class SuperbikeData {
       id: 'bike-44-aprilia-rs-457',
       name: 'Aprilia RS 457',
       brand: 'Aprilia',
-      tagline: '#44 🇮🇹 Italy | 457cc Twin | 47.6 HP Lightweight Racer',
+      tagline: '#44 🇮🇹 Italy | 457cc Twin | 48 HP Lightweight Racer',
       year: 2024,
       priceEstimate: '\$6,799',
       imageUrl: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=80',
@@ -1283,8 +1283,8 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1945, founderName: 'Aprilia', headquarters: 'Noale, Italy 🇮🇹',
-        racingTitles: '54 World Titles', legendStory: 'Lightweight entry to Aprilia RS supersport dynasty with aluminum frame.',
-        milestones: [MilestoneModel(year: 2024, name: 'RS 457', description: '47.6 HP aluminum chassis supersport.')],
+        racingTitles: '54 World Titles', legendStory: 'Official Aprilia Racing Press: Aluminum perimeter frame segment first.',
+        milestones: [MilestoneModel(year: 2024, name: 'RS 457', description: '48 HP aluminum chassis supersport.')],
       ),
       highlights: ['Aluminum perimeter frame (Segment First)', 'ByBre radial caliper', 'Ride-by-Wire with 3 Riding Modes'],
       engineNoteDescription: 'Crisp parallel twin 270° firing note.',
@@ -1312,7 +1312,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1934, founderName: 'KTM', headquarters: 'Mattighofen, Austria 🇦🇹',
-        racingTitles: 'Moto3 World Champions', legendStory: 'Moto3 race technology adapted into a razor-sharp single cylinder supersport.',
+        racingTitles: 'Moto3 World Champions', legendStory: 'Official KTM Press: Moto3 race engineering adapted for street supersport performance.',
         milestones: [MilestoneModel(year: 2024, name: 'RC 390', description: '43 HP WP APEX equipped track supersport.')],
       ),
       highlights: ['WP APEX adjustable front & rear suspension', 'Supermoto ABS mode', 'Bionic lightweight wheels'],
@@ -1341,7 +1341,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1923, founderName: 'BMW', headquarters: 'Munich, Germany 🇩🇪',
-        racingTitles: 'M Motorsport Series', legendStory: 'The world\'s most powerful long-distance crossover superbike.',
+        racingTitles: 'M Motorsport Series', legendStory: 'Official BMW Motorrad Press: 201 HP M Crossover with M winglets generating 12kg downforce.',
         milestones: [MilestoneModel(year: 2024, name: 'M 1000 XR', description: '201 HP M Crossover.')],
       ),
       highlights: ['M Winglets generating 12kg downforce', 'M Carbon wheels option', 'ShiftCam 201 HP engine'],
@@ -1370,7 +1370,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Ducati', headquarters: 'Bologna, Italy 🇮🇹',
-        racingTitles: 'Design Award Winner', legendStory: 'Diavel V4 combines muscular cruiser presence with V4 Granturismo superbike power.',
+        racingTitles: 'Design Award Winner', legendStory: 'Official Ducati Press: Quad-tip exhaust tailpipes with V4 Granturismo muscle cruiser power.',
         milestones: [MilestoneModel(year: 2024, name: 'Diavel V4', description: '168 HP V4 Granturismo Muscle Cruiser.')],
       ),
       highlights: ['Quad-tip exhaust tailpipes', 'Rear cylinder deactivation at idle', '240/45 ZR17 massive rear tire'],
@@ -1399,7 +1399,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1896, founderName: 'Kawasaki', headquarters: 'Tokyo, Japan 🇯🇵',
-        racingTitles: 'Sport Tourer Benchmark', legendStory: 'Refined 4th generation sport touring motorcycle combining Ninja performance with panniers.',
+        racingTitles: 'Sport Tourer Benchmark', legendStory: 'Official Kawasaki Press: Integrated pannier mounts with Electronic Cruise Control.',
         milestones: [MilestoneModel(year: 2024, name: 'Ninja 1000SX', description: '142 HP Inline-4 Sport Tourer.')],
       ),
       highlights: ['Electronic Cruise Control', 'Integrated pannier mounts', 'TFT display with Rideology App'],
@@ -1428,7 +1428,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1923, founderName: 'Max Friz', headquarters: 'Munich, Germany 🇩🇪',
-        racingTitles: 'Boxer Engine Pioneers', legendStory: 'Over 100 years of BMW Boxer engine heritage evolved into the 1,300cc ShiftCam boxer.',
+        racingTitles: 'Boxer Engine Pioneers', legendStory: 'Official BMW Motorrad Press: 1,300cc ShiftCam Boxer twin producing 149 Nm torque.',
         milestones: [MilestoneModel(year: 2025, name: 'R 1300 R', description: '145 HP ShiftCam Boxer Roadster.')],
       ),
       highlights: ['149 Nm massive boxer torque', 'ShiftCam variable intake timing', 'Evo Telelever front suspension'],
@@ -1457,7 +1457,7 @@ class SuperbikeData {
       ),
       history: const BrandHistory(
         foundingYear: 1926, founderName: 'Ducati & Lamborghini', headquarters: 'Bologna, Italy 🇮🇹',
-        racingTitles: 'Hypercar Collaboration', legendStory: 'Ultra-exclusive 630-unit collaboration inspired by the Lamborghini Huracán STO super sports car.',
+        racingTitles: 'Hypercar Collaboration', legendStory: 'Official Ducati & Lamborghini Press: Ultra-exclusive 630-unit collaboration matching the Huracán STO super sports car.',
         milestones: [MilestoneModel(year: 2024, name: 'Panigale V4 Lamborghini', description: 'Limited edition 630 units STO styling.')],
       ),
       highlights: ['Lamborghini Huracán STO Verde Citrea green & Arancio Dac livery', 'Forged carbon wheels matching Huracán STO', 'Titanium Akrapovič exhaust'],
