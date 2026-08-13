@@ -17,28 +17,28 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDemoKeySuperBike4a70e',
-    appId: '1:917039183488:web:superbikeapp',
+    apiKey: 'AIzaSyCv5iVWmxxI4sEaXeb0_o7PZraLmFGkR7U',
+    appId: '1:917039183488:web:d8c768808f539b47e65865',
     messagingSenderId: '917039183488',
     projectId: 'super-bike-4a70e',
     authDomain: 'super-bike-4a70e.firebaseapp.com',
-    storageBucket: 'super-bike-4a70e.appspot.com',
+    storageBucket: 'super-bike-4a70e.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDemoKeySuperBike4a70e',
+    apiKey: 'AIzaSyCv5iVWmxxI4sEaXeb0_o7PZraLmFGkR7U',
     appId: '1:917039183488:android:superbikeapp',
     messagingSenderId: '917039183488',
     projectId: 'super-bike-4a70e',
-    storageBucket: 'super-bike-4a70e.appspot.com',
+    storageBucket: 'super-bike-4a70e.firebasestorage.app',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDemoKeySuperBike4a70e',
-    appId: '1:917039183488:windows:superbikeapp',
+    apiKey: 'AIzaSyCv5iVWmxxI4sEaXeb0_o7PZraLmFGkR7U',
+    appId: '1:917039183488:web:d8c768808f539b47e65865',
     messagingSenderId: '917039183488',
     projectId: 'super-bike-4a70e',
     authDomain: 'super-bike-4a70e.firebaseapp.com',
-    storageBucket: 'super-bike-4a70e.appspot.com',
+    storageBucket: 'super-bike-4a70e.firebasestorage.app',
   );
 }
