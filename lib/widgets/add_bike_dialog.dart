@@ -132,7 +132,7 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'ADD CUSTOM SUPERBIKE',
                       style: TextStyle(
                         fontFamily: 'Orbitron',
@@ -143,7 +143,7 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
                     ),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close, color: Color(0FF94A3B8)),
+                      icon: const Icon(Icons.close, color: Color(0xFF94A3B8)),
                     ),
                   ],
                 ),
@@ -157,7 +157,7 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
 
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Divider(color: Color(0FF2D3548)),
+                  child: Divider(color: Color(0xFF2D3548)),
                 ),
 
                 const Text(
@@ -229,16 +229,16 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
         style: const TextStyle(color: Colors.white, fontFamily: 'Rajdhani', fontSize: 15),
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(color: Color(0FF94A3B8)),
+          labelStyle: const TextStyle(color: Color(0xFF94A3B8)),
           filled: true,
-          fillColor: const Color(0FF161A23),
+          fillColor: const Color(0xFF161A23),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0FF2D3548)),
+            borderSide: const BorderSide(color: Color(0xFF2D3548)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0FF2D3548)),
+            borderSide: const BorderSide(color: Color(0xFF2D3548)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),

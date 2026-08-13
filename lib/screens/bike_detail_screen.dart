@@ -93,8 +93,8 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
                       bike.imageUrl,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => Container(
-                        color: const Color(0FF161A23),
-                        child: const Icon(Icons.two_wheeler, size: 80, color: Color(0FF2D3548)),
+                        color: const Color(0xFF161A23),
+                        child: const Icon(Icons.two_wheeler, size: 80, color: Color(0xFF2D3548)),
                       ),
                     ),
                     // Dark Gradient Overlay
@@ -152,7 +152,7 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
                             style: const TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 14,
-                              color: Color(0FF94A3B8),
+                              color: Color(0xFF94A3B8),
                             ),
                           ),
                         ],
@@ -183,7 +183,7 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
                     // Tab Navigation Header
                     Container(
                       decoration: const BoxDecoration(
-                        border: Border(bottom: BorderSide(color: Color(0FF2D3548), width: 1.5)),
+                        border: Border(bottom: BorderSide(color: Color(0xFF2D3548), width: 1.5)),
                       ),
                       child: TabBar(
                         controller: _tabController,
@@ -191,7 +191,7 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
                         indicatorColor: bike.accentColor,
                         indicatorWeight: 3,
                         labelColor: bike.accentColor,
-                        unselectedLabelColor: const Color(0FF94A3B8),
+                        unselectedLabelColor: const Color(0xFF94A3B8),
                         labelStyle: const TextStyle(
                           fontFamily: 'Orbitron',
                           fontSize: 13,
@@ -321,9 +321,9 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(0FF161A23),
+              color: const Color(0xFF161A23),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0FF2D3548)),
+              border: Border.all(color: const Color(0xFF2D3548)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,7 +352,7 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
                             style: const TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 14,
-                              color: Color(0FFF0F4F8),
+                              color: Color(0xFFF0F4F8),
                             ),
                           ),
                         ),
@@ -387,9 +387,9 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0FF161A23),
+            color: const Color(0xFF161A23),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0FF2D3548)),
+            border: Border.all(color: const Color(0xFF2D3548)),
           ),
           child: Row(
             children: [
@@ -421,7 +421,7 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13,
-                        color: Color(0FF94A3B8),
+                        color: Color(0xFF94A3B8),
                       ),
                     ),
                   ],
@@ -451,7 +451,7 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
 
     return ListView.separated(
       itemCount: rows.length,
-      separatorBuilder: (context, index) => const Divider(color: Color(0FF2D3548), height: 1),
+      separatorBuilder: (context, index) => const Divider(color: Color(0xFF2D3548), height: 1),
       itemBuilder: (context, index) {
         final row = rows[index];
         return Padding(
@@ -465,7 +465,7 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
                   fontFamily: 'Rajdhani',
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Color(0FF94A3B8),
+                  color: Color(0xFF94A3B8),
                 ),
               ),
               Expanded(

@@ -3,21 +3,21 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Color Palette - Telemetry High-Octane Dark Mode
-  static const Color background = Color(0F0B0E14);
-  static const Color surface = Color(0F161A23);
-  static const Color cardDark = Color(0F1E2430);
-  static const Color glassBorder = Color(0F2D3548);
+  static const Color background = Color(0xFF0B0E14);
+  static const Color surface = Color(0xFF161A23);
+  static const Color cardDark = Color(0xFF1E2430);
+  static const Color glassBorder = Color(0xFF2D3548);
 
   // Accents
-  static const Color neonRed = Color(0FFFF2A54); // Ducati / Racing
-  static const Color electricCyan = Color(0FF00F0FF); // High Tech / Yamaha
-  static const Color neonGreen = Color(0FF39FF14); // Kawasaki Lime
-  static const Color vividGold = Color(0FFFFD700); // Ohlins / Brembo
-  static const Color bmwBlue = Color(0FF0066FF); // BMW M
+  static const Color neonRed = Color(0xFFFF2A54); // Ducati / Racing
+  static const Color electricCyan = Color(0xFF00F0FF); // High Tech / Yamaha
+  static const Color neonGreen = Color(0xFF39FF14); // Kawasaki Lime
+  static const Color vividGold = Color(0xFFFFD700); // Ohlins / Brembo
+  static const Color bmwBlue = Color(0xFF0066FF); // BMW M
 
-  static const Color textPrimary = Color(0FFF0F4F8);
-  static const Color textSecondary = Color(0FF94A3B8);
-  static const Color textMuted = Color(0FF64748B);
+  static const Color textPrimary = Color(0xFFF0F4F8);
+  static const Color textSecondary = Color(0xFF94A3B8);
+  static const Color textMuted = Color(0xFF64748B);
 
   static ThemeData get darkTheme {
     return ThemeData(
@@ -29,7 +29,6 @@ class AppTheme {
         primary: neonRed,
         secondary: electricCyan,
         surface: surface,
-        background: background,
         tertiary: vividGold,
       ),
       textTheme: TextTheme(
@@ -77,7 +76,7 @@ class AppTheme {
           color: textPrimary,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: cardDark,
         elevation: 0,
         shape: RoundedRectangleBorder(

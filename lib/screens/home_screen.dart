@@ -3,7 +3,6 @@ import '../data/superbike_data.dart';
 import '../models/superbike_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/add_bike_dialog.dart';
-import '../widgets/engine_sound_player.dart';
 import '../widgets/spec_comparison_modal.dart';
 import 'bike_detail_screen.dart';
 
@@ -149,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Leaderboard Ticker Banner
           SliverToBoxAdapter(
             child: Container(
-              color: const Color(0FF0D1017),
+              color: const Color(0xFF0D1017),
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -174,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: const TextStyle(
                             fontFamily: 'Rajdhani',
                             fontSize: 13,
-                            color: Color(0FF94A3B8),
+                            color: Color(0xFF94A3B8),
                           ),
                         ),
                       );
@@ -202,17 +201,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: const TextStyle(color: Colors.white, fontFamily: 'Rajdhani'),
                           decoration: InputDecoration(
                             hintText: 'Search by model name, brand, or specs...',
-                            hintStyle: const TextStyle(color: Color(0FF64748B)),
+                            hintStyle: const TextStyle(color: Color(0xFF64748B)),
                             prefixIcon: const Icon(Icons.search, color: AppTheme.electricCyan),
                             filled: true,
-                            fillColor: const Color(0FF161A23),
+                            fillColor: const Color(0xFF161A23),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0FF2D3548)),
+                              borderSide: const BorderSide(color: Color(0xFF2D3548)),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0FF2D3548)),
+                              borderSide: const BorderSide(color: Color(0xFF2D3548)),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -267,9 +266,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             selected: isSelected,
                             selectedColor: AppTheme.electricCyan,
-                            backgroundColor: const Color(0FF161A23),
+                            backgroundColor: const Color(0xFF161A23),
                             side: BorderSide(
-                              color: isSelected ? AppTheme.electricCyan : const Color(0FF2D3548),
+                              color: isSelected ? AppTheme.electricCyan : const Color(0xFF2D3548),
                             ),
                             onSelected: (selected) {
                               if (selected) setState(() => selectedBrand = brand);
@@ -355,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Image.network(
                 bike.imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (c, e, s) => Container(color: const Color(0FF161A23)),
+                errorBuilder: (c, e, s) => Container(color: const Color(0xFF161A23)),
               ),
             ),
             Container(
@@ -408,7 +407,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 13,
-                      color: Color(0FF94A3B8),
+                      color: Color(0xFF94A3B8),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -459,7 +458,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0FF161A23).withOpacity(0.9),
+        color: const Color(0xFF161A23).withOpacity(0.9),
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: color.withOpacity(0.6)),
       ),
@@ -477,11 +476,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBikeCard(Superbike bike) {
     return Card(
-      color: const Color(0FF161A23),
+      color: const Color(0xFF161A23),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Color(0FF2D3548), width: 1.2),
+        side: const BorderSide(color: Color(0xFF2D3548), width: 1.2),
       ),
       child: InkWell(
         onTap: () {
@@ -504,8 +503,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     bike.imageUrl,
                     fit: BoxFit.cover,
                     errorBuilder: (c, e, s) => Container(
-                      color: const Color(0FF1E2430),
-                      child: const Icon(Icons.two_wheeler, size: 48, color: Color(0FF2D3548)),
+                      color: const Color(0xFF1E2430),
+                      child: const Icon(Icons.two_wheeler, size: 48, color: Color(0xFF2D3548)),
                     ),
                   ),
                   Container(
@@ -567,7 +566,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
-                      color: Color(0FF94A3B8),
+                      color: Color(0xFF94A3B8),
                     ),
                   ),
                   const SizedBox(height: 12),

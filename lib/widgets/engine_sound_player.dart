@@ -88,10 +88,10 @@ class _EngineSoundPlayerState extends State<EngineSoundPlayer>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0FF161A23),
+        color: const Color(0xFF161A23),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isPlaying ? widget.accentColor : const Color(0FF2D3548),
+          color: isPlaying ? widget.accentColor : const Color(0xFF2D3548),
           width: 1.5,
         ),
         boxShadow: isPlaying
@@ -117,7 +117,7 @@ class _EngineSoundPlayerState extends State<EngineSoundPlayer>
                   height: 54,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isPlaying ? widget.accentColor : const Color(0FF1E2430),
+                    color: isPlaying ? widget.accentColor : const Color(0xFF1E2430),
                     boxShadow: [
                       BoxShadow(
                         color: (isPlaying ? widget.accentColor : Colors.black)
@@ -154,7 +154,7 @@ class _EngineSoundPlayerState extends State<EngineSoundPlayer>
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: Color(0FF94A3B8),
+                        color: Color(0xFF94A3B8),
                       ),
                     ),
                   ],
@@ -172,7 +172,7 @@ class _EngineSoundPlayerState extends State<EngineSoundPlayer>
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
                       color: currentRpm > (widget.redlineRpm * 0.8)
-                          ? const Color(0FFFF2A54)
+                          ? const Color(0xFFFF2A54)
                           : widget.accentColor,
                     ),
                   ),
@@ -182,7 +182,7 @@ class _EngineSoundPlayerState extends State<EngineSoundPlayer>
                       fontFamily: 'Rajdhani',
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: Color(0FF64748B),
+                      color: Color(0xFF64748B),
                     ),
                   ),
                 ],
@@ -195,7 +195,7 @@ class _EngineSoundPlayerState extends State<EngineSoundPlayer>
             height: 24,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: List.generate(24, (index) {
                 final double heightMultiplier = isPlaying
                     ? (sin((index + _waveController.value * 10)) * 0.5 + 0.5)
@@ -207,7 +207,7 @@ class _EngineSoundPlayerState extends State<EngineSoundPlayer>
                   decoration: BoxDecoration(
                     color: isPlaying
                         ? widget.accentColor.withOpacity(0.5 + (index % 5) * 0.1)
-                        : const Color(0FF2D3548),
+                        : const Color(0xFF2D3548),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 );

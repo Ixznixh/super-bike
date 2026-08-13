@@ -61,14 +61,14 @@ class HistoryTimelineWidget extends StatelessWidget {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  const Icon(Icons.location_on_outlined, size: 16, color: Color(0FF94A3B8)),
+                  const Icon(Icons.location_on_outlined, size: 16, color: Color(0xFF94A3B8)),
                   const SizedBox(width: 6),
                   Text(
                     'Headquarters: ${history.headquarters} | Founder: ${history.founderName}',
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 13,
-                      color: Color(0FF94A3B8),
+                      color: Color(0xFF94A3B8),
                     ),
                   ),
                 ],
@@ -98,7 +98,7 @@ class HistoryTimelineWidget extends StatelessWidget {
                   fontFamily: 'Inter',
                   fontSize: 14,
                   height: 1.5,
-                  color: Color(0FFF0F4F8),
+                  color: Color(0xFFF0F4F8),
                 ),
               ),
             ],
@@ -112,7 +112,7 @@ class HistoryTimelineWidget extends StatelessWidget {
           children: [
             Container(width: 4, height: 20, color: accentColor),
             const SizedBox(width: 10),
-            Text(
+            const Text(
               'HISTORICAL EVOLUTION & MILESTONES',
               style: TextStyle(
                 fontFamily: 'Orbitron',
@@ -163,7 +163,7 @@ class HistoryTimelineWidget extends StatelessWidget {
                           Expanded(
                             child: Container(
                               width: 2,
-                              color: const Color(0FF2D3548),
+                              color: const Color(0xFF2D3548),
                             ),
                           ),
                       ],
@@ -176,9 +176,9 @@ class HistoryTimelineWidget extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 16),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0FF161A23),
+                        color: const Color(0xFF161A23),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0FF2D3548)),
+                        border: Border.all(color: const Color(0xFF2D3548)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +198,7 @@ class HistoryTimelineWidget extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: const Color(0FF1E2430),
+                                  color: const Color(0xFF1E2430),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
@@ -219,7 +219,7 @@ class HistoryTimelineWidget extends StatelessWidget {
                             style: const TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 13,
-                              color: Color(0FF94A3B8),
+                              color: Color(0xFF94A3B8),
                               height: 1.4,
                             ),
                           ),

@@ -20,7 +20,7 @@ class TelemetryGauge extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext me) {
+  Widget build(BuildContext context) {
     final double percentage = (value / maxValue).clamp(0.0, 1.0);
 
     return SizedBox(
@@ -68,7 +68,7 @@ class TelemetryGauge extends StatelessWidget {
                   fontFamily: 'Rajdhani',
                   fontSize: size * 0.08,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0FF94A3B8),
+                  color: const Color(0xFF94A3B8),
                   letterSpacing: 1.0,
                 ),
               ),
@@ -95,7 +95,7 @@ class _GaugePainter extends CustomPainter {
 
     // Track Paint
     final trackPaint = Paint()
-      ..color = const Color(0FF1E2430)
+      ..color = const Color(0xFF1E2430)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 8
       ..strokeCap = StrokeCap.round;
@@ -167,7 +167,7 @@ class TelemetryBar extends StatelessWidget {
                 fontFamily: 'Rajdhani',
                 fontSize: 13,
                 fontWeight: FontWeight.w700,
-                color: Color(0FF94A3B8),
+                color: Color(0xFF94A3B8),
                 letterSpacing: 1.0,
               ),
             ),
@@ -187,7 +187,7 @@ class TelemetryBar extends StatelessWidget {
           height: 8,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: const Color(0FF1E2430),
+            color: const Color(0xFF1E2430),
             borderRadius: BorderRadius.circular(4),
           ),
           child: FractionallySizedBox(

@@ -55,7 +55,7 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
                   children: [
                     const Icon(Icons.compare_arrows_rounded, color: AppTheme.electricCyan, size: 28),
                     const SizedBox(width: 10),
-                    Text(
+                    const Text(
                       'TELEMETRY MATRIX COMPARISON',
                       style: TextStyle(
                         fontFamily: 'Orbitron',
@@ -69,7 +69,7 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
                 ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close_rounded, color: Color(0FF94A3B8)),
+                  icon: const Icon(Icons.close_rounded, color: Color(0xFF94A3B8)),
                 ),
               ],
             ),
@@ -140,7 +140,6 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
               '0-100 KM/H ACCELERATION',
               '${bike1.specs.acceleration0to100} s',
               '${bike2.specs.acceleration0to100} s',
-              // Note: lower acceleration time is better
               (4.0 - bike1.specs.acceleration0to100) * 100,
               (4.0 - bike2.specs.acceleration0to100) * 100,
               bike1.accentColor,
@@ -152,7 +151,6 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
               'DRY WEIGHT (KG)',
               '${bike1.specs.dryWeightKg} KG',
               '${bike2.specs.dryWeightKg} KG',
-              // lower weight is better ratio
               (250 - bike1.specs.dryWeightKg).toDouble(),
               (250 - bike2.specs.dryWeightKg).toDouble(),
               bike1.accentColor,
@@ -179,7 +177,7 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0FF161A23),
+        color: const Color(0xFF161A23),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: current.accentColor),
       ),
@@ -187,7 +185,7 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
         child: DropdownButton<Superbike>(
           value: current,
           isExpanded: true,
-          dropdownColor: const Color(0FF161A23),
+          dropdownColor: const Color(0xFF161A23),
           icon: Icon(Icons.arrow_drop_down, color: current.accentColor),
           items: widget.allBikes.map((bike) {
             return DropdownMenuItem<Superbike>(
@@ -223,9 +221,9 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0FF161A23),
+        color: const Color(0xFF161A23),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0FF2D3548)),
+        border: Border.all(color: const Color(0xFF2D3548)),
       ),
       child: Column(
         children: [
@@ -235,7 +233,7 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
               fontFamily: 'Rajdhani',
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: Color(0FF94A3B8),
+              color: Color(0xFF94A3B8),
               letterSpacing: 1.1,
             ),
           ),
@@ -251,7 +249,7 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
                     fontFamily: 'Orbitron',
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: isVal1Better ? color1 : const Color(0FF94A3B8),
+                    color: isVal1Better ? color1 : const Color(0xFF94A3B8),
                   ),
                 ),
               ),
@@ -259,7 +257,7 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                   '|',
-                  style: TextStyle(color: Color(0FF2D3548), fontSize: 18),
+                  style: TextStyle(color: Color(0xFF2D3548), fontSize: 18),
                 ),
               ),
               // Bike 2 value
@@ -271,7 +269,7 @@ class _SpecComparisonModalState extends State<SpecComparisonModal> {
                     fontFamily: 'Orbitron',
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: !isVal1Better ? color2 : const Color(0FF94A3B8),
+                    color: !isVal1Better ? color2 : const Color(0xFF94A3B8),
                   ),
                 ),
               ),

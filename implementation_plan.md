@@ -1,6 +1,6 @@
 # Implementation Plan - Apex Superbike Showcase App & Web Platform
 
-Create an interactive multi-platform Flutter application (supporting Web, Windows, and Android) designed to present iconic superbikes with telemetry-style specifications, immersive engine sounds, interactive brand histories, side-by-side comparison matrix, local & Firebase cloud database sync, and 100% free hosting.
+Create an interactive multi-platform Flutter application (supporting Web, Windows, and Android) designed to present iconic superbikes with telemetry-style specifications, immersive engine sounds, interactive brand histories, side-by-side comparison matrix, local & Firebase cloud database sync, and 100% free **Firebase Hosting**.
 
 ---
 
@@ -8,8 +8,19 @@ Create an interactive multi-platform Flutter application (supporting Web, Window
 - **Firebase Project Name**: `Super-bike`
 - **Firebase Project ID**: `super-bike-4a70e`
 - **Firebase Project Number**: `917039183488`
+- **Hosting URL (Spark Plan)**: `https://super-bike-4a70e.web.app` / `https://super-bike-4a70e.firebaseapp.com`
 - **GitHub Account**: `Ixznixh`
 - **Target Repository**: `super-bike`
+
+---
+
+## Hosting Strategy: Firebase Hosting (Spark Plan - 100% Free)
+
+1. **Card-Free Web Hosting**: Firebase Hosting Spark plan provides 10 GB storage and 360 MB/day data transfer 100% free forever without requiring any credit card or billing configuration.
+2. **Custom URL & Free SSL**: Automatically provides `super-bike-4a70e.web.app` and `super-bike-4a70e.firebaseapp.com` with free SSL certificates.
+3. **Deployment Options**:
+   - **Firebase CLI**: Run `firebase deploy --only hosting`
+   - **GitHub Actions**: Automated CI/CD push pipeline to Firebase Hosting on `main` branch.
 
 ---
 
@@ -20,14 +31,12 @@ Create an interactive multi-platform Flutter application (supporting Web, Window
    - **Windows / Web**: Wide split-pane layout, desktop mouse hover effects, multi-column spec matrix, and keyboard navigation support.
    - **Android**: Responsive touch-first bottom sheets, gesture-based card carousels, and swipeable history timeline.
 3. **Core Features**:
-   - **Interactive Superbike Garage**: Showcase flagship models (e.g., *Ducati Panigale V4 R, Kawasaki Ninja H2R, BMW M1000RR, Yamaha YZF-R1M, MV Agusta F4 1000 RR*).
+   - **Interactive Superbike Garage**: Showcase flagship models (*Ducati Panigale V4 R, Kawasaki Ninja H2R, BMW M1000RR, Yamaha YZF-R1M, MV Agusta F4 1000 RR*).
    - **Telemetry Specifications HUD**: Animated gauges for Horsepower, RPM Redline, Top Speed, Dry Weight, Power-to-Weight ratio, and Electronics Suite.
    - **Interactive Brand & Bike History**: Interactive timeline detailing brand inception, racing pedigree (MotoGP/WSBK), key technological leaps, and historical predecessors.
    - **Engine Sound Experience**: Synthesized/recorded audio play system for engine rev notes.
    - **Side-by-Side Spec Comparator**: Compare performance numbers between any 2 bikes in real-time.
    - **User Custom Bike Builder**: Allow users to add their own custom bike locally & sync to Firebase cloud database for free.
-4. **100% Card-Free Hosting Strategy (Free Tier)**:
-   - **Web Hosting**: **Vercel Hobby** or **Firebase Hosting (Spark Plan)** / **GitHub Pages**. All three platforms offer forever-free web hosting with SSL without entering a credit card.
 
 ---
 
@@ -44,8 +53,9 @@ Create an interactive multi-platform Flutter application (supporting Web, Window
 - `lib/widgets/add_bike_dialog.dart` - Form for adding custom bike specs.
 - `lib/screens/home_screen.dart` - Responsive dashboard shell & hero carousel.
 - `lib/screens/bike_detail_screen.dart` - Deep-dive detail screen.
-- `vercel.json` - Vercel hosting config.
-- `.github/workflows/deploy.yml` - Free GitHub Actions deployment to Vercel/GitHub Pages.
+- `firebase.json` - Firebase Hosting deployment config.
+- `.firebaserc` - Firebase project mapping.
+- `.github/workflows/deploy.yml` - Automated GitHub Actions deployment to Firebase.
 
 ---
 
@@ -53,4 +63,4 @@ Create an interactive multi-platform Flutter application (supporting Web, Window
 1. `flutter analyze` - Ensure clean code with no compilation or lint errors.
 2. `flutter test` - Verify logic and data models.
 3. `flutter build web --release` - Verify production web build output.
-4. `git push` - Deploy repository to GitHub (`Ixznixh/super-bike`).
+4. `firebase deploy --only hosting` / `git push` - Deploy to Firebase Hosting.
