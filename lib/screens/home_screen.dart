@@ -216,16 +216,22 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () => _authService.signOut(),
             ),
           ] else ...[
-            TextButton.icon(
+            OutlinedButton.icon(
               onPressed: _openAuthDialog,
-              icon: const Icon(Icons.login_rounded, size: 18, color: AppTheme.electricCyan),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: AppTheme.electricCyan, width: 1.5),
+                foregroundColor: AppTheme.electricCyan,
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
+              icon: const Icon(Icons.key_rounded, size: 16),
               label: const Text(
-                'LOG IN',
+                'LOG IN / REGISTER',
                 style: TextStyle(
                   fontFamily: 'Orbitron',
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.electricCyan,
+                  letterSpacing: 1.0,
                 ),
               ),
             ),
