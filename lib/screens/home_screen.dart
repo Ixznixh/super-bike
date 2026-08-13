@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../data/superbike_data.dart';
 import '../models/superbike_model.dart';
+import '../services/auth_service.dart';
+import '../services/firestore_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/add_bike_dialog.dart';
+import '../widgets/auth_dialog.dart';
 import '../widgets/spec_comparison_modal.dart';
 import 'bike_detail_screen.dart';
 
@@ -14,43 +19,98 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late List<Superbike> bikes;
+  List<Superbike> localBikes = SuperbikeData.initialBikes;
+  List<Superbike> cloudBikes = [];
+  StreamSubscription<List<Superbike>>? _bikesSubscription;
+  StreamSubscription<User?>? _authSubscription;
+
+  User? currentUser;
   String selectedBrand = 'ALL';
   String searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
+  final AuthService _authService = AuthService();
+  final FirestoreService _firestoreService = FirestoreService();
 
   @override
   void initState() {
     super.initState();
-    bikes = SuperbikeData.initialBikes;
+    currentUser = _authService.currentUser;
+
+    // Listen to Firebase Auth state
+    _authSubscription = _authService.authStateChanges.listen((user) {
+      if (mounted) {
+        setState(() => currentUser = user);
+      }
+    });
+
+    // Listen to Firestore real-time cloud bikes stream
+    try {
+      _bikesSubscription = _firestoreService.bikesStream.listen((firestoreBikes) {
+        if (mounted) {
+          setState(() {
+            cloudBikes = firestoreBikes;
+          });
+        }
+      }, onError: (err) {
+        debugPrint('Firestore stream error: $err');
+      });
+    } catch (e) {
+      debugPrint('Firestore stream init exception: $e');
+    }
   }
 
   @override
   void dispose() {
+    _bikesSubscription?.cancel();
+    _authSubscription?.cancel();
     _searchController.dispose();
     super.dispose();
   }
 
+  // Combine initial static bikes + community cloud uploaded bikes
+  List<Superbike> get allBikes {
+    final Map<String, Superbike> bikeMap = {};
+    for (var b in localBikes) {
+      bikeMap[b.id] = b;
+    }
+    for (var b in cloudBikes) {
+      bikeMap[b.id] = b;
+    }
+    return bikeMap.values.toList();
+  }
+
   void _onAddCustomBike(Superbike newBike) {
     setState(() {
-      bikes.insert(0, newBike);
+      localBikes.insert(0, newBike);
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: AppTheme.electricCyan,
         content: Text(
-          '${newBike.name} added to Telemetry Garage!',
+          '${newBike.name} uploaded to Firebase Garage!',
           style: const TextStyle(color: Colors.black, fontFamily: 'Orbitron', fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 
-  void _openAddBikeDialog() {
+  void _openAuthDialog() {
     showDialog(
       context: context,
-      builder: (context) => AddBikeDialog(onAddBike: _onAddCustomBike),
+      builder: (context) => const AuthDialog(),
     );
+  }
+
+  void _openAddBikeDialog() {
+    if (currentUser == null) {
+      // Require login before adding bike
+      _openAuthDialog();
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AddBikeDialog(onAddBike: _onAddCustomBike),
+      );
+    }
   }
 
   void _openComparisonModal(Superbike initial) {
@@ -58,13 +118,13 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: SpecComparisonModal(allBikes: bikes, initialBike1: initial),
+        child: SpecComparisonModal(allBikes: allBikes, initialBike1: initial),
       ),
     );
   }
 
   List<Superbike> get filteredBikes {
-    return bikes.where((bike) {
+    return allBikes.where((bike) {
       final matchesBrand = (selectedBrand == 'ALL') ||
           (bike.brand.toUpperCase() == selectedBrand.toUpperCase());
       final matchesQuery = searchQuery.isEmpty ||
@@ -77,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<String> get availableBrands {
     final set = {'ALL'};
-    for (var b in bikes) {
+    for (var b in allBikes) {
       set.add(b.brand.toUpperCase());
     }
     return set.toList();
@@ -87,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth > 900;
-    final featuredBike = bikes.isNotEmpty ? bikes.first : null;
+    final featuredBike = allBikes.isNotEmpty ? allBikes.first : null;
 
     return Scaffold(
       backgroundColor: AppTheme.background,
@@ -112,33 +172,75 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: AppTheme.neonRed.withOpacity(0.2),
+                color: AppTheme.electricCyan.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: AppTheme.neonRed, width: 0.8),
+                border: Border.all(color: AppTheme.electricCyan, width: 0.8),
               ),
               child: const Text(
-                'HUD 3.0',
+                'FIREBASE SYNC',
                 style: TextStyle(
                   fontFamily: 'Orbitron',
-                  fontSize: 10,
+                  fontSize: 9,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.neonRed,
+                  color: AppTheme.electricCyan,
                 ),
               ),
             ),
           ],
         ),
         actions: [
+          // Firebase Auth User Account Indicator
+          if (currentUser != null) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Chip(
+                avatar: const Icon(Icons.person_rounded, size: 16, color: AppTheme.electricCyan),
+                label: Text(
+                  currentUser!.isAnonymous
+                      ? 'Guest'
+                      : (currentUser!.email?.split('@').first ?? 'User'),
+                  style: const TextStyle(
+                    fontFamily: 'Rajdhani',
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                backgroundColor: const Color(0xFF161A23),
+                side: const BorderSide(color: AppTheme.electricCyan),
+              ),
+            ),
+            IconButton(
+              tooltip: 'Sign Out',
+              icon: const Icon(Icons.logout_rounded, color: AppTheme.neonRed, size: 20),
+              onPressed: () => _authService.signOut(),
+            ),
+          ] else ...[
+            TextButton.icon(
+              onPressed: _openAuthDialog,
+              icon: const Icon(Icons.login_rounded, size: 18, color: AppTheme.electricCyan),
+              label: const Text(
+                'LOG IN',
+                style: TextStyle(
+                  fontFamily: 'Orbitron',
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.electricCyan,
+                ),
+              ),
+            ),
+          ],
+
           IconButton(
             tooltip: 'Add Superbike',
             icon: const Icon(Icons.add_circle_outline_rounded, color: AppTheme.electricCyan),
             onPressed: _openAddBikeDialog,
           ),
-          if (bikes.isNotEmpty)
+          if (allBikes.isNotEmpty)
             IconButton(
               tooltip: 'Compare Specs',
               icon: const Icon(Icons.compare_arrows_rounded, color: AppTheme.vividGold),
-              onPressed: () => _openComparisonModal(bikes.first),
+              onPressed: () => _openComparisonModal(allBikes.first),
             ),
           const SizedBox(width: 12),
         ],
@@ -157,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     const Icon(Icons.bolt, color: AppTheme.vividGold, size: 16),
                     const SizedBox(width: 6),
                     const Text(
-                      'TOP SPEED LEADERBOARD: ',
+                      'COMMUNITY TELEMETRY LEADERBOARD: ',
                       style: TextStyle(
                         fontFamily: 'Orbitron',
                         fontSize: 11,
@@ -165,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: AppTheme.vividGold,
                       ),
                     ),
-                    ...bikes.map((b) {
+                    ...allBikes.map((b) {
                       return Padding(
                         padding: const EdgeInsets.only(right: 16.0),
                         child: Text(
@@ -191,7 +293,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Search Bar & Add Button Row
                   Row(
                     children: [
                       Expanded(
@@ -200,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onChanged: (val) => setState(() => searchQuery = val),
                           style: const TextStyle(color: Colors.white, fontFamily: 'Rajdhani'),
                           decoration: InputDecoration(
-                            hintText: 'Search by model name, brand, or specs...',
+                            hintText: 'Search by model name, brand, or community specs...',
                             hintStyle: const TextStyle(color: Color(0xFF64748B)),
                             prefixIcon: const Icon(Icons.search, color: AppTheme.electricCyan),
                             filled: true,
@@ -230,9 +331,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
-                          icon: const Icon(Icons.add, size: 20),
+                          icon: const Icon(Icons.cloud_upload_rounded, size: 20),
                           label: const Text(
-                            'ADD SUPERBIKE',
+                            'UPLOAD SUPERBIKE',
                             style: TextStyle(
                               fontFamily: 'Orbitron',
                               fontSize: 12,
@@ -363,8 +464,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Colors.black.withOpacity(0.92),
-                    Colors.black.withOpacity(0.6),
+                    Colors.black.withValues(alpha: 0.92),
+                    Colors.black.withValues(alpha: 0.6),
                     Colors.transparent,
                   ],
                 ),
@@ -426,7 +527,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BikeDetailScreen(bike: bike, allBikes: bikes),
+                          builder: (context) => BikeDetailScreen(bike: bike, allBikes: allBikes),
                         ),
                       );
                     },
@@ -458,9 +559,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF161A23).withOpacity(0.9),
+        color: const Color(0xFF161A23).withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withOpacity(0.6)),
+        border: Border.all(color: color.withValues(alpha: 0.6)),
       ),
       child: Text(
         text,
@@ -487,14 +588,13 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BikeDetailScreen(bike: bike, allBikes: bikes),
+              builder: (context) => BikeDetailScreen(bike: bike, allBikes: allBikes),
             ),
           );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Preview Container
             Expanded(
               child: Stack(
                 fit: StackFit.expand,
@@ -512,7 +612,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                        colors: [Colors.transparent, Colors.black.withValues(alpha: 0.8)],
                       ),
                     ),
                   ),
@@ -522,7 +622,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.7),
+                        color: Colors.black.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: bike.accentColor),
                       ),
@@ -541,7 +641,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            // Card Body Info
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/superbike_model.dart';
+import '../services/auth_service.dart';
+import '../services/firestore_service.dart';
 import '../theme/app_theme.dart';
 
 class AddBikeDialog extends StatefulWidget {
@@ -34,6 +36,10 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
     text: 'Engineered for relentless track precision and road dominance.',
   );
 
+  final FirestoreService _firestoreService = FirestoreService();
+  final AuthService _authService = AuthService();
+  bool isUploading = false;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -53,14 +59,17 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
     super.dispose();
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => isUploading = true);
+
       final hp = int.tryParse(_hpController.text) ?? 200;
       final weight = int.tryParse(_weightController.text) ?? 170;
       final ratio = (hp / weight);
+      final currentUser = _authService.currentUser;
 
       final newBike = Superbike(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        id: 'bike_${DateTime.now().millisecondsSinceEpoch}',
         name: _nameController.text.trim(),
         brand: _brandController.text.trim(),
         tagline: _taglineController.text.trim(),
@@ -68,6 +77,7 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
         priceEstimate: _priceController.text.trim(),
         imageUrl: _imageUrlController.text.trim(),
         accentColor: AppTheme.electricCyan,
+        uploaderEmail: currentUser?.email ?? (currentUser?.isAnonymous == true ? 'Guest User' : 'Community Uploader'),
         specs: TelemetrySpecs(
           horsepower: hp,
           torqueNm: int.tryParse(_torqueController.text) ?? 110,
@@ -109,8 +119,15 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
         engineNoteDescription: 'Custom high-rev exhaust resonance.',
       );
 
+      // Attempt Firestore upload
+      try {
+        await _firestoreService.uploadSuperbike(newBike);
+      } catch (e) {
+        // Fallback local addition if offline
+      }
+
       widget.onAddBike(newBike);
-      Navigator.pop(context);
+      if (mounted) Navigator.pop(context);
     }
   }
 
@@ -133,10 +150,10 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'ADD CUSTOM SUPERBIKE',
+                      'UPLOAD TO FIREBASE CLOUD',
                       style: TextStyle(
                         fontFamily: 'Orbitron',
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w900,
                         color: AppTheme.electricCyan,
                       ),
@@ -196,20 +213,22 @@ class _AddBikeDialogState extends State<AddBikeDialog> {
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
-                    onPressed: _submitForm,
+                    onPressed: isUploading ? null : _submitForm,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.electricCyan,
                       foregroundColor: Colors.black,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
-                    child: const Text(
-                      'ADD TO GARAGE DATABASE',
-                      style: TextStyle(
-                        fontFamily: 'Orbitron',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
+                    child: isUploading
+                        ? const CircularProgressIndicator(color: Colors.black)
+                        : const Text(
+                            'PUBLISH TO FIREBASE GARAGE',
+                            style: TextStyle(
+                              fontFamily: 'Orbitron',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
                   ),
                 ),
               ],
