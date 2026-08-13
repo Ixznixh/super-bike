@@ -101,7 +101,7 @@ class _AuthDialogState extends State<AuthDialog> {
             ),
             const SizedBox(height: 6),
             const Text(
-              'Sign in with Google to upload custom superbikes and sync live telemetry specs across devices.',
+              'Sign in with Google to access live telemetry specs and sync across devices.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Inter',

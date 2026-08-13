@@ -6,7 +6,6 @@ import '../models/superbike_model.dart';
 import '../services/auth_service.dart';
 import '../services/firestore_service.dart';
 import '../theme/app_theme.dart';
-import '../widgets/add_bike_dialog.dart';
 import '../widgets/auth_dialog.dart';
 import '../widgets/spec_comparison_modal.dart';
 import 'bike_detail_screen.dart';
@@ -78,38 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return localBikes;
   }
 
-  void _onAddCustomBike(Superbike newBike) {
-    setState(() {
-      localBikes.insert(0, newBike);
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: AppTheme.electricCyan,
-        content: Text(
-          '${newBike.name} uploaded to Firebase Garage!',
-          style: const TextStyle(color: Colors.black, fontFamily: 'Orbitron', fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
   void _openAuthDialog() {
     showDialog(
       context: context,
       builder: (context) => const AuthDialog(),
     );
-  }
-
-  void _openAddBikeDialog() {
-    if (currentUser == null) {
-      // Require login before adding bike
-      _openAuthDialog();
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AddBikeDialog(onAddBike: _onAddCustomBike),
-      );
-    }
   }
 
   void _openComparisonModal(Superbike initial) {
@@ -236,11 +208,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
 
-          IconButton(
-            tooltip: 'Add Superbike',
-            icon: const Icon(Icons.add_circle_outline_rounded, color: AppTheme.electricCyan),
-            onPressed: _openAddBikeDialog,
-          ),
           if (allBikes.isNotEmpty)
             IconButton(
               tooltip: 'Compare Specs',
@@ -326,27 +293,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      if (isDesktop) ...[
-                        const SizedBox(width: 16),
-                        ElevatedButton.icon(
-                          onPressed: _openAddBikeDialog,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.electricCyan,
-                            foregroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          ),
-                          icon: const Icon(Icons.cloud_upload_rounded, size: 20),
-                          label: const Text(
-                            'UPLOAD SUPERBIKE',
-                            style: TextStyle(
-                              fontFamily: 'Orbitron',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
                     ],
                   ),
 
