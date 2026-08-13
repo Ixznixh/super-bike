@@ -96,8 +96,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Strictly limit accessible catalog to Top 5 bikes when currentUser == null
+  List<Superbike> get accessibleBikes {
+    if (currentUser == null) {
+      return allBikes.take(5).toList();
+    }
+    return allBikes;
+  }
+
   List<Superbike> get filteredBikes {
-    final list = allBikes.where((bike) {
+    return accessibleBikes.where((bike) {
       final matchesBrand = (selectedBrand == 'ALL') ||
           (bike.brand.toUpperCase() == selectedBrand.toUpperCase());
       final matchesQuery = searchQuery.isEmpty ||
@@ -106,12 +114,18 @@ class _HomeScreenState extends State<HomeScreen> {
           bike.tagline.toLowerCase().contains(searchQuery.toLowerCase());
       return matchesBrand && matchesQuery;
     }).toList();
+  }
 
-    // Without login show only 5 bikes; with login show all bikes
-    if (currentUser == null) {
-      return list.take(5).toList();
+  void _onSelectBrand(String brand) {
+    if (currentUser == null && brand != 'ALL') {
+      final top5Brands = accessibleBikes.map((b) => b.brand.toUpperCase()).toSet();
+      if (!top5Brands.contains(brand.toUpperCase())) {
+        // Brand is outside top 5 preview bikes - prompt Google login dialog
+        _openAuthDialog();
+        return;
+      }
     }
-    return list;
+    setState(() => selectedBrand = brand);
   }
 
   List<String> get availableBrands {
@@ -312,26 +326,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       children: availableBrands.map((brand) {
                         final isSelected = selectedBrand == brand;
+                        final top5Brands = accessibleBikes.map((b) => b.brand.toUpperCase()).toSet();
+                        final isLockedForGuest = currentUser == null && brand != 'ALL' && !top5Brands.contains(brand);
+
                         return Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: ChoiceChip(
+                            avatar: isLockedForGuest
+                                ? const Icon(Icons.lock_rounded, size: 12, color: Color(0xFF64748B))
+                                : null,
                             label: Text(
                               brand,
                               style: TextStyle(
                                 fontFamily: 'Orbitron',
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
-                                color: isSelected ? Colors.black : Colors.white,
+                                color: isSelected
+                                    ? Colors.black
+                                    : (isLockedForGuest ? const Color(0xFF64748B) : Colors.white),
                               ),
                             ),
                             selected: isSelected,
                             selectedColor: AppTheme.electricCyan,
                             backgroundColor: const Color(0xFF161A23),
                             side: BorderSide(
-                              color: isSelected ? AppTheme.electricCyan : const Color(0xFF2D3548),
+                              color: isSelected
+                                  ? AppTheme.electricCyan
+                                  : (isLockedForGuest ? const Color(0xFF1E293B) : const Color(0xFF2D3548)),
                             ),
                             onSelected: (selected) {
-                              if (selected) setState(() => selectedBrand = brand);
+                              if (selected) _onSelectBrand(brand);
                             },
                           ),
                         );
@@ -434,25 +458,86 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // Bike Cards Grid
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            sliver: SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: isDesktop ? 3 : (screenWidth > 600 ? 2 : 1),
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: isDesktop ? 0.85 : 0.88,
+          // Bike Cards Grid or Locked Empty State
+          if (filteredBikes.isEmpty)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+                child: Container(
+                  padding: const EdgeInsets.all(32),
+                  decoration: AppTheme.glassDecoration(borderColor: AppTheme.electricCyan),
+                  child: Column(
+                    children: [
+                      const Icon(Icons.lock_person_rounded, size: 48, color: AppTheme.electricCyan),
+                      const SizedBox(height: 16),
+                      Text(
+                        currentUser == null
+                            ? 'BIKE OR BRAND LOCKED IN GUEST PREVIEW'
+                            : 'NO SUPERBIKES MATCH YOUR FILTER',
+                        style: const TextStyle(
+                          fontFamily: 'Orbitron',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        currentUser == null
+                            ? 'In guest mode, only the Top 5 Ranked Superbikes are accessible. Sign in with Google to search and unlock all 50 superbikes!'
+                            : 'Try adjusting your search query or brand selector filter.',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          color: Color(0xFF94A3B8),
+                          fontSize: 13,
+                        ),
+                      ),
+                      if (currentUser == null) ...[
+                        const SizedBox(height: 20),
+                        ElevatedButton.icon(
+                          onPressed: _openAuthDialog,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.electricCyan,
+                            foregroundColor: Colors.black,
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          ),
+                          icon: const Icon(Icons.key_rounded, size: 16),
+                          label: const Text(
+                            'LOG IN WITH GOOGLE TO UNLOCK ALL 50 BIKES',
+                            style: TextStyle(
+                              fontFamily: 'Orbitron',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final bike = filteredBikes[index];
-                  return _buildBikeCard(bike);
-                },
-                childCount: filteredBikes.length,
+            )
+          else
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              sliver: SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isDesktop ? 3 : (screenWidth > 600 ? 2 : 1),
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: isDesktop ? 0.85 : 0.88,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final bike = filteredBikes[index];
+                    return _buildBikeCard(bike);
+                  },
+                  childCount: filteredBikes.length,
+                ),
               ),
             ),
-          ),
 
           // Unlock Full Catalog Banner for Guests (Not logged in)
           if (currentUser == null)
