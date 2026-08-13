@@ -51,8 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
         if (mounted) {
           // Sort by ID to preserve 1 to 50 ranking order
           firestoreBikes.sort((a, b) => a.id.compareTo(b.id));
-          setState(() {
-            cloudBikes = firestoreBikes;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() {
+                cloudBikes = firestoreBikes;
+              });
+            }
           });
         }
       }, onError: (err) {
