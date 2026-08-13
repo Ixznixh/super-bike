@@ -43,6 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
 
+    // Automatically sync & seed all flagship superbikes to Firebase Cloud Firestore
+    _firestoreService.syncAllBikesToFirebase();
+
     // Listen to Firestore real-time cloud bikes stream
     try {
       _bikesSubscription = _firestoreService.bikesStream.listen((firestoreBikes) {
@@ -67,16 +70,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  // Combine initial static bikes + community cloud uploaded bikes
+  // Single Source of Truth: Firebase Cloud Firestore
   List<Superbike> get allBikes {
-    final Map<String, Superbike> bikeMap = {};
-    for (var b in localBikes) {
-      bikeMap[b.id] = b;
+    if (cloudBikes.isNotEmpty) {
+      return cloudBikes;
     }
-    for (var b in cloudBikes) {
-      bikeMap[b.id] = b;
-    }
-    return bikeMap.values.toList();
+    return localBikes;
   }
 
   void _onAddCustomBike(Superbike newBike) {

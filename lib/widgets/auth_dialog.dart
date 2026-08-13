@@ -17,6 +17,7 @@ class _AuthDialogState extends State<AuthDialog> {
   String? errorMessage;
 
   Future<void> _handleGoogleSignIn() async {
+    if (!mounted) return;
     setState(() {
       isGoogleLoading = true;
       errorMessage = null;
@@ -26,11 +27,15 @@ class _AuthDialogState extends State<AuthDialog> {
       await _authService.signInWithGoogle();
       if (mounted) Navigator.pop(context);
     } catch (e) {
-      setState(() {
-        errorMessage = e.toString().replaceAll(RegExp(r'\[.*\]'), '').trim();
-      });
+      if (mounted) {
+        setState(() {
+          errorMessage = e.toString().replaceAll(RegExp(r'\[.*\]'), '').trim();
+        });
+      }
     } finally {
-      if (mounted) setState(() => isGoogleLoading = false);
+      if (mounted) {
+        setState(() => isGoogleLoading = false);
+      }
     }
   }
 
