@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "super-bike-4a70e"
-  }
+  },
+  "targets": {
+    "super-bike-4a70e": {
+      "hosting": {
+        "app": [
+          "super-bike-209b8c"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

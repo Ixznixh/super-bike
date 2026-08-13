@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "super-bike-209b8c",
     "public": "build/web",
     "ignore": [
       "firebase.json",
