@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
+import 'animated_rider_hero.dart';
 
 class AuthDialog extends StatefulWidget {
   const AuthDialog({super.key});
@@ -12,9 +13,7 @@ class AuthDialog extends StatefulWidget {
 
 class _AuthDialogState extends State<AuthDialog> {
   final AuthService _authService = AuthService();
-
   bool isGoogleLoading = false;
-  bool isGuestLoading = false;
   String? errorMessage;
 
   Future<void> _handleGoogleSignIn() async {
@@ -35,53 +34,70 @@ class _AuthDialogState extends State<AuthDialog> {
     }
   }
 
-  Future<void> _guestLogin() async {
-    setState(() {
-      isGuestLoading = true;
-      errorMessage = null;
-    });
-    try {
-      await _authService.signInAnonymously();
-      if (mounted) Navigator.pop(context);
-    } catch (e) {
-      setState(() => errorMessage = 'Guest login failed: $e');
-    } finally {
-      if (mounted) setState(() => isGuestLoading = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppTheme.background,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       child: Container(
-        width: 400,
-        padding: const EdgeInsets.all(28),
+        width: 440,
+        padding: const EdgeInsets.all(24),
+        decoration: AppTheme.glassDecoration(
+          borderColor: AppTheme.electricCyan,
+          fillColor: const Color(0xFF0D1017).withValues(alpha: 0.95),
+          borderRadius: 24,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Top Bar
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'SIGN IN TO APEX',
-                  style: TextStyle(
-                    fontFamily: 'Orbitron',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w900,
-                    color: AppTheme.electricCyan,
-                  ),
+                Row(
+                  children: [
+                    const Icon(Icons.flash_on_rounded, color: AppTheme.neonRed, size: 20),
+                    const SizedBox(width: 6),
+                    Text(
+                      'APEX TELEMETRY AUTH',
+                      style: TextStyle(
+                        fontFamily: 'Orbitron',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
                 ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close, color: Color(0xFF94A3B8)),
+                  icon: const Icon(Icons.close_rounded, color: Color(0xFF94A3B8)),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+
+            const SizedBox(height: 12),
+
+            // Live Animated Superbike Rider Hero
+            const AnimatedRiderHero(height: 130),
+
+            const SizedBox(height: 16),
+
+            Text(
+              'IGNITE YOUR GARAGE',
+              style: TextStyle(
+                fontFamily: 'Orbitron',
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+                color: AppTheme.electricCyan,
+                letterSpacing: 1.5,
+              ),
+            ),
+            const SizedBox(height: 6),
             const Text(
-              'Sign in with your Google Account to upload superbikes and sync telemetry across devices.',
+              'Sign in with Google to upload custom superbikes and sync live telemetry specs across devices.',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 13,
@@ -97,11 +113,12 @@ class _AuthDialogState extends State<AuthDialog> {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppTheme.neonRed.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: AppTheme.neonRed),
                 ),
                 child: Text(
                   errorMessage!,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: AppTheme.neonRed,
                     fontSize: 12,
@@ -110,59 +127,47 @@ class _AuthDialogState extends State<AuthDialog> {
                 ),
               ),
 
-            // Prominent Google Sign-In Button
-            SizedBox(
+            // Ultra-Modern Glowing Google Sign-In Button
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.electricCyan.withValues(alpha: 0.35),
+                    blurRadius: 20,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
               width: double.infinity,
               height: 52,
               child: ElevatedButton.icon(
-                onPressed: isGoogleLoading || isGuestLoading ? null : _handleGoogleSignIn,
+                onPressed: isGoogleLoading ? null : _handleGoogleSignIn,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
                   elevation: 4,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
                 icon: isGoogleLoading
                     ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                        width: 22,
+                        height: 22,
+                        child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.black),
                       )
                     : const FaIcon(FontAwesomeIcons.google, color: Color(0xFF4285F4), size: 22),
                 label: Text(
-                  isGoogleLoading ? 'SIGNING IN...' : 'SIGN IN WITH GOOGLE',
+                  isGoogleLoading ? 'IGNITING ENGINE...' : 'SIGN IN WITH GOOGLE',
                   style: const TextStyle(
                     fontFamily: 'Orbitron',
                     fontSize: 13,
                     fontWeight: FontWeight.w900,
-                    letterSpacing: 0.8,
+                    letterSpacing: 1.0,
                   ),
                 ),
               ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Guest Mode Option
-            TextButton(
-              onPressed: isGoogleLoading || isGuestLoading ? null : _guestLogin,
-              child: isGuestLoading
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF94A3B8)),
-                    )
-                  : const Text(
-                      'Continue as Guest',
-                      style: TextStyle(
-                        color: Color(0xFF94A3B8),
-                        fontSize: 13,
-                        fontFamily: 'Rajdhani',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
             ),
           ],
         ),
