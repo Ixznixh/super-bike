@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/superbike_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/telemetry_gauge.dart';
-import '../widgets/engine_sound_player.dart';
 import '../widgets/history_timeline.dart';
 import '../widgets/spec_comparison_modal.dart';
 
@@ -170,16 +169,6 @@ class _BikeDetailScreenState extends State<BikeDetailScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Engine Sound Simulator Widget
-                    EngineSoundPlayer(
-                      bikeName: bike.name,
-                      engineNoteDescription: bike.engineNoteDescription,
-                      accentColor: bike.accentColor,
-                      redlineRpm: bike.specs.rpmRedline,
-                    ),
-
-                    const SizedBox(height: 24),
-
                     // Tab Navigation Header
                     Container(
                       decoration: const BoxDecoration(
