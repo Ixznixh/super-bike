@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 
@@ -17,6 +18,7 @@ class _AuthDialogState extends State<AuthDialog> {
 
   bool isRegistering = false;
   bool isLoading = false;
+  bool isGoogleLoading = false;
   String? errorMessage;
 
   @override
@@ -24,6 +26,24 @@ class _AuthDialogState extends State<AuthDialog> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    setState(() {
+      isGoogleLoading = true;
+      errorMessage = null;
+    });
+
+    try {
+      await _authService.signInWithGoogle();
+      if (mounted) Navigator.pop(context);
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString().replaceAll(RegExp(r'\[.*\]'), '').trim();
+      });
+    } finally {
+      if (mounted) setState(() => isGoogleLoading = false);
+    }
   }
 
   Future<void> _submitAuth() async {
@@ -86,9 +106,9 @@ class _AuthDialogState extends State<AuthDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      isRegistering ? 'CREATE FIREBASE ACCOUNT' : 'FIREBASE AUTH LOGIN',
-                      style: const TextStyle(
+                    const Text(
+                      'FIREBASE AUTHENTICATION',
+                      style: TextStyle(
                         fontFamily: 'Orbitron',
                         fontSize: 15,
                         fontWeight: FontWeight.w900,
@@ -122,6 +142,61 @@ class _AuthDialogState extends State<AuthDialog> {
                     ),
                   ),
 
+                // 1-Click Primary Google Sign-In Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton.icon(
+                    onPressed: isGoogleLoading || isLoading ? null : _handleGoogleSignIn,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    icon: isGoogleLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                          )
+                        : const FaIcon(FontAwesomeIcons.google, color: Color(0xFF4285F4), size: 20),
+                    label: Text(
+                      isGoogleLoading ? 'SIGNING IN WITH GOOGLE...' : 'SIGN IN WITH GOOGLE',
+                      style: const TextStyle(
+                        fontFamily: 'Orbitron',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 18),
+                  child: Row(
+                    children: [
+                      Expanded(child: Divider(color: Color(0xFF2D3548))),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          'OR EMAIL SIGN IN',
+                          style: TextStyle(
+                            fontFamily: 'Rajdhani',
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF64748B),
+                          ),
+                        ),
+                      ),
+                      Expanded(child: Divider(color: Color(0xFF2D3548))),
+                    ],
+                  ),
+                ),
+
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -145,8 +220,6 @@ class _AuthDialogState extends State<AuthDialog> {
                       borderSide: const BorderSide(color: AppTheme.electricCyan),
                     ),
                   ),
-                  validator: (val) =>
-                      val == null || !val.contains('@') ? 'Enter a valid email' : null,
                 ),
 
                 const SizedBox(height: 14),
@@ -174,36 +247,28 @@ class _AuthDialogState extends State<AuthDialog> {
                       borderSide: const BorderSide(color: AppTheme.electricCyan),
                     ),
                   ),
-                  validator: (val) =>
-                      val == null || val.length < 6 ? 'Minimum 6 characters' : null,
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
 
                 SizedBox(
                   width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
+                  height: 44,
+                  child: OutlinedButton(
                     onPressed: isLoading ? null : _submitAuth,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.electricCyan,
-                      foregroundColor: Colors.black,
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: AppTheme.electricCyan),
+                      foregroundColor: AppTheme.electricCyan,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
-                    child: isLoading
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
-                          )
-                        : Text(
-                            isRegistering ? 'REGISTER ACCOUNT' : 'LOG IN',
-                            style: const TextStyle(
-                              fontFamily: 'Orbitron',
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                    child: Text(
+                      isRegistering ? 'REGISTER WITH EMAIL' : 'LOG IN WITH EMAIL',
+                      style: const TextStyle(
+                        fontFamily: 'Orbitron',
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
 
