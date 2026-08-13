@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Superbike> get filteredBikes {
-    return allBikes.where((bike) {
+    final list = allBikes.where((bike) {
       final matchesBrand = (selectedBrand == 'ALL') ||
           (bike.brand.toUpperCase() == selectedBrand.toUpperCase());
       final matchesQuery = searchQuery.isEmpty ||
@@ -106,6 +106,12 @@ class _HomeScreenState extends State<HomeScreen> {
           bike.tagline.toLowerCase().contains(searchQuery.toLowerCase());
       return matchesBrand && matchesQuery;
     }).toList();
+
+    // Without login show only 5 bikes; with login show all bikes
+    if (currentUser == null) {
+      return list.take(5).toList();
+    }
+    return list;
   }
 
   List<String> get availableBrands {
@@ -358,7 +364,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(width: 4, height: 18, color: AppTheme.neonRed),
                       const SizedBox(width: 8),
                       Text(
-                        'SUPERBIKE GARAGE (${filteredBikes.length})',
+                        currentUser == null
+                            ? 'TOP 5 SUPERBIKES PREVIEW (5 OF 50)'
+                            : 'SUPERBIKE GARAGE (${filteredBikes.length} BIKES)',
                         style: const TextStyle(
                           fontFamily: 'Orbitron',
                           fontSize: 16,
@@ -368,6 +376,59 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
+                  if (currentUser == null)
+                    InkWell(
+                      onTap: _openAuthDialog,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppTheme.electricCyan.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppTheme.electricCyan, width: 1),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.lock_rounded, size: 12, color: AppTheme.electricCyan),
+                            SizedBox(width: 4),
+                            Text(
+                              'LOG IN TO UNLOCK ALL 50',
+                              style: TextStyle(
+                                fontFamily: 'Orbitron',
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.electricCyan,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  else
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppTheme.neonGreen.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppTheme.neonGreen, width: 1),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.check_circle_rounded, size: 12, color: AppTheme.neonGreen),
+                          SizedBox(width: 4),
+                          Text(
+                            'ALL 50 BIKES UNLOCKED',
+                            style: TextStyle(
+                              fontFamily: 'Orbitron',
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.neonGreen,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -392,6 +453,75 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+
+          // Unlock Full Catalog Banner for Guests (Not logged in)
+          if (currentUser == null)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
+                child: Container(
+                  padding: const EdgeInsets.all(28),
+                  decoration: AppTheme.glassDecoration(borderColor: AppTheme.electricCyan),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppTheme.electricCyan.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                          border: Border.all(color: AppTheme.electricCyan, width: 1.5),
+                        ),
+                        child: const Icon(Icons.lock_rounded, size: 36, color: AppTheme.electricCyan),
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        '45 MORE SUPERBIKES LOCKED',
+                        style: TextStyle(
+                          fontFamily: 'Orbitron',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Sign in with Google to unlock all 50 ranked superbikes, deep telemetry stats, and brand history timelines.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          color: Color(0xFF94A3B8),
+                          fontSize: 13,
+                          height: 1.4,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton.icon(
+                        onPressed: _openAuthDialog,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.electricCyan,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                          elevation: 8,
+                          shadowColor: AppTheme.electricCyan.withValues(alpha: 0.4),
+                        ),
+                        icon: const Icon(Icons.key_rounded, size: 18),
+                        label: const Text(
+                          'LOG IN WITH GOOGLE TO UNLOCK ALL 50 BIKES',
+                          style: TextStyle(
+                            fontFamily: 'Orbitron',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            letterSpacing: 0.8,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
