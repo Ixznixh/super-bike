@@ -20,7 +20,7 @@ class _AnimatedRiderHeroState extends State<AnimatedRiderHero>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1200),
+      duration: const Duration(milliseconds: 1400),
     )..repeat();
   }
 
@@ -36,69 +36,38 @@ class _AnimatedRiderHeroState extends State<AnimatedRiderHero>
       animation: _controller,
       builder: (context, child) {
         final val = _controller.value;
-        // Micro engine rumble vibration (1.2px vertical oscillation)
-        final rumbleY = sin(val * 2 * pi * 4) * 1.2;
+
+        // Smooth high-octane engine rumble (vertical) & forward motion (horizontal)
+        final offsetY = sin(val * 2 * pi * 3) * 1.5;
+        final offsetX = cos(val * 2 * pi * 1.5) * 2.0;
 
         return SizedBox(
           height: widget.height,
           width: double.infinity,
           child: Stack(
-            clipBehavior: Clip.none,
             alignment: Alignment.center,
             children: [
-              // 1. Background Airflow & Speed Streamlines Layer
+              // 1. Aerodynamic Air Flow Lines Moving Front to Back (Right to Left)
               Positioned.fill(
                 child: CustomPaint(
-                  painter: _AirflowMotionPainter(animValue: val),
+                  painter: _FrontToBackAirflowPainter(animValue: val),
                 ),
               ),
 
-              // 2. Main Biker Image (Without altering main picture, keying white to transparent)
+              // 2. Clean Bike & Rider Image with Motion Vibration
               Transform.translate(
-                offset: Offset(0, rumbleY),
-                child: Container(
-                  height: widget.height,
-                  alignment: Alignment.center,
-                  child: ShaderMask(
-                    shaderCallback: (bounds) {
-                      return const LinearGradient(
-                        colors: [Colors.white, Colors.white],
-                      ).createShader(bounds);
-                    },
-                    blendMode: BlendMode.dst,
-                    child: ColorFiltered(
-                      colorFilter: const ColorFilter.matrix(<double>[
-                        // Matrix to key out white background: (Red + Green + Blue)/3 inversion for alpha
-                        1, 0, 0, 0, 0,
-                        0, 1, 0, 0, 0,
-                        0, 0, 1, 0, 0,
-                        -0.33, -0.33, -0.33, 1, 255,
-                      ]),
-                      child: Image.asset(
-                        'assets/images/biker_hero.png',
-                        height: widget.height,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Fallback in case asset path is loading on web
-                          return Image.network(
-                            'assets/biker_hero.png',
-                            height: widget.height,
-                            fit: BoxFit.contain,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              // 3. Foreground Motion Effects (Wheel Spoke Rims, Exhaust Flames, Headlight Flare)
-              Positioned.fill(
-                child: CustomPaint(
-                  painter: _ForegroundEffectsPainter(
-                    animValue: val,
-                    rumbleY: rumbleY,
-                  ),
+                offset: Offset(offsetX, offsetY),
+                child: Image.asset(
+                  'assets/images/biker_hero.png',
+                  height: widget.height * 0.9,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.network(
+                      'assets/biker_hero.png',
+                      height: widget.height * 0.9,
+                      fit: BoxFit.contain,
+                    );
+                  },
                 ),
               ),
             ],
@@ -109,38 +78,44 @@ class _AnimatedRiderHeroState extends State<AnimatedRiderHero>
   }
 }
 
-class _AirflowMotionPainter extends CustomPainter {
+class _FrontToBackAirflowPainter extends CustomPainter {
   final double animValue;
 
-  _AirflowMotionPainter({required this.animValue});
+  _FrontToBackAirflowPainter({required this.animValue});
 
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final h = size.height;
 
-    // Aerodynamic Wind Tunnel Streamlines wrapping over the rider
     final airPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    void drawStream(Path path, Color color, double strokeWidth, double phase, double dashLen) {
+    // Draw continuous streamlines flowing from right (front of bike) to left (back of bike)
+    void drawAirflowLine({
+      required Path path,
+      required Color color,
+      required double strokeWidth,
+      required double phaseOffset,
+      required double streamLength,
+    }) {
       final metrics = path.computeMetrics();
       for (final m in metrics) {
-        final len = m.length;
-        final progress = (animValue + phase) % 1.0;
-        final start = progress * len;
-        final end = min(start + dashLen, len);
+        final totalLen = m.length;
+        final progress = (animValue + phaseOffset) % 1.0;
+        final startDist = progress * totalLen;
+        final endDist = min(startDist + streamLength, totalLen);
 
-        if (start < len) {
+        if (startDist < totalLen) {
           airPaint
             ..color = color
             ..strokeWidth = strokeWidth
             ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 2);
-          canvas.drawPath(m.extractPath(start, end), airPaint);
+          canvas.drawPath(m.extractPath(startDist, endDist), airPaint);
         }
-        if (start + dashLen > len) {
-          final wrapEnd = (start + dashLen) - len;
+        if (startDist + streamLength > totalLen) {
+          final wrapEnd = (startDist + streamLength) - totalLen;
           airPaint
             ..color = color
             ..strokeWidth = strokeWidth
@@ -150,139 +125,72 @@ class _AirflowMotionPainter extends CustomPainter {
       }
     }
 
-    // Top Airflow Stream over Helmet
+    // Streamline 1: High aerodynamic stream over helmet (Right to Left)
     final pathTop = Path()
       ..moveTo(w * 0.95, h * 0.12)
-      ..cubicTo(w * 0.70, h * 0.05, w * 0.40, h * 0.05, w * 0.05, h * 0.15);
-    drawStream(pathTop, AppTheme.electricCyan.withValues(alpha: 0.9), 2.4, 0.0, 75);
+      ..cubicTo(w * 0.68, h * 0.05, w * 0.38, h * 0.05, w * 0.05, h * 0.18);
+    drawAirflowLine(
+      path: pathTop,
+      color: AppTheme.electricCyan.withValues(alpha: 0.85),
+      strokeWidth: 2.2,
+      phaseOffset: 0.0,
+      streamLength: 80,
+    );
 
-    // Helmet Contour Airflow Stream
+    // Streamline 2: Contour wrapping over Rider Helmet and Back
     final pathHelmet = Path()
-      ..moveTo(w * 0.90, h * 0.32)
-      ..cubicTo(w * 0.75, h * 0.18, w * 0.50, h * 0.08, w * 0.10, h * 0.28);
-    drawStream(pathHelmet, Colors.white.withValues(alpha: 0.95), 2.8, 0.3, 85);
+      ..moveTo(w * 0.90, h * 0.28)
+      ..cubicTo(w * 0.72, h * 0.15, w * 0.48, h * 0.10, w * 0.05, h * 0.32);
+    drawAirflowLine(
+      path: pathHelmet,
+      color: Colors.white.withValues(alpha: 0.9),
+      strokeWidth: 2.6,
+      phaseOffset: 0.25,
+      streamLength: 95,
+    );
 
-    // Tank & Arm Airflow Stream
+    // Streamline 3: Mid stream over Tank & Arms
     final pathMid = Path()
-      ..moveTo(w * 0.92, h * 0.52)
-      ..cubicTo(w * 0.70, h * 0.42, w * 0.45, h * 0.35, w * 0.05, h * 0.48);
-    drawStream(pathMid, AppTheme.electricCyan.withValues(alpha: 0.75), 2.0, 0.6, 65);
+      ..moveTo(w * 0.92, h * 0.48)
+      ..cubicTo(w * 0.68, h * 0.38, w * 0.42, h * 0.32, w * 0.05, h * 0.52);
+    drawAirflowLine(
+      path: pathMid,
+      color: AppTheme.electricCyan.withValues(alpha: 0.7),
+      strokeWidth: 2.0,
+      phaseOffset: 0.50,
+      streamLength: 70,
+    );
 
-    // Ground Speed Asphalt Lines under tires
-    final groundY = h * 0.88;
+    // Streamline 4: Lower stream under engine & rear wheel
+    final pathLow = Path()
+      ..moveTo(w * 0.90, h * 0.75)
+      ..cubicTo(w * 0.65, h * 0.72, w * 0.35, h * 0.72, w * 0.05, h * 0.78);
+    drawAirflowLine(
+      path: pathLow,
+      color: AppTheme.neonRed.withValues(alpha: 0.75),
+      strokeWidth: 2.2,
+      phaseOffset: 0.75,
+      streamLength: 75,
+    );
+
+    // Ground Speed Asphalt Lines under tires (Right to Left motion)
+    final groundY = h * 0.90;
     final groundPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0
       ..strokeCap = StrokeCap.round;
 
-    for (int g = 0; g < 7; g++) {
-      final gProg = (animValue + g * 0.14) % 1.0;
+    for (int g = 0; g < 6; g++) {
+      final gProg = (animValue + g * 0.16) % 1.0;
       final gx1 = w * (1.1 - gProg * 1.2);
-      final gx2 = gx1 - 40;
-      groundPaint.color = AppTheme.electricCyan.withValues(alpha: (1.0 - gProg) * 0.45);
+      final gx2 = gx1 - 45;
+      groundPaint.color = AppTheme.electricCyan.withValues(alpha: (1.0 - gProg) * 0.4);
       canvas.drawLine(Offset(gx1, groundY), Offset(gx2, groundY), groundPaint);
     }
   }
 
   @override
-  bool shouldRepaint(covariant _AirflowMotionPainter oldDelegate) {
+  bool shouldRepaint(covariant _FrontToBackAirflowPainter oldDelegate) {
     return oldDelegate.animValue != animValue;
-  }
-}
-
-class _ForegroundEffectsPainter extends CustomPainter {
-  final double animValue;
-  final double rumbleY;
-
-  _ForegroundEffectsPainter({
-    required this.animValue,
-    required this.rumbleY,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final w = size.width;
-    final h = size.height;
-
-    // Center offsets corresponding to the picture proportions
-    final imgWidth = min(w, h * 1.5);
-    final imgLeft = (w - imgWidth) / 2;
-
-    // Coordinates mapped to the image dimensions
-    final rearWheel = Offset(imgLeft + imgWidth * 0.21, h * 0.74 + rumbleY);
-    final frontWheel = Offset(imgLeft + imgWidth * 0.83, h * 0.74 + rumbleY);
-    final wheelRadius = imgWidth * 0.145;
-
-    final headlightPos = Offset(imgLeft + imgWidth * 0.88, h * 0.48 + rumbleY);
-    final exhaustPos = Offset(imgLeft + imgWidth * 0.34, h * 0.73 + rumbleY);
-
-    // 1. ROTATING NEON WHEEL SPOKE GLOW OVERLAYS
-    void drawWheelMotion(Offset center) {
-      final rimGlow = Paint()
-        ..color = AppTheme.electricCyan.withValues(alpha: 0.7)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2.5
-        ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 3);
-      canvas.drawCircle(center, wheelRadius - 3, rimGlow);
-
-      // Rotating Spoke Lines
-      final spokePaint = Paint()
-        ..color = AppTheme.electricCyan.withValues(alpha: 0.85)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.8;
-
-      const numSpokes = 5;
-      final rotation = animValue * 2 * pi * 4; // High speed rotation
-
-      for (int i = 0; i < numSpokes; i++) {
-        final angle = rotation + (i * 2 * pi / numSpokes);
-        final sx = center.dx + (wheelRadius - 6) * cos(angle);
-        final sy = center.dy + (wheelRadius - 6) * sin(angle);
-        canvas.drawLine(center, Offset(sx, sy), spokePaint);
-      }
-    }
-
-    drawWheelMotion(rearWheel);
-    drawWheelMotion(frontWheel);
-
-    // 2. EXHAUST BURNOUT SMOKE & TURBO AFTERBURNER FLAMES
-    final flamePaint = Paint()..style = PaintingStyle.fill;
-    for (int f = 0; f < 6; f++) {
-      final fProg = (animValue + f * 0.16) % 1.0;
-      final fx = exhaustPos.dx - fProg * 45;
-      final fy = exhaustPos.dy + sin(fProg * pi * 4) * 3;
-      final fRadius = 6.5 * (1.0 - fProg);
-      flamePaint.color = (f % 2 == 0 ? AppTheme.neonRed : Colors.orangeAccent)
-          .withValues(alpha: (1.0 - fProg) * 0.85);
-      canvas.drawCircle(Offset(fx, fy), fRadius, flamePaint);
-    }
-
-    // 3. HEADLIGHT PULSING LED LENS FLARE
-    final flareRadius = 14.0 + sin(animValue * 2 * pi * 2) * 4.0;
-    final flarePaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.95)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 8);
-    canvas.drawCircle(headlightPos, flareRadius, flarePaint);
-
-    final laserBeamPath = Path();
-    laserBeamPath.moveTo(headlightPos.dx, headlightPos.dy - 3);
-    laserBeamPath.lineTo(w, headlightPos.dy - 20);
-    laserBeamPath.lineTo(w, headlightPos.dy + 25);
-    laserBeamPath.lineTo(headlightPos.dx, headlightPos.dy + 3);
-    laserBeamPath.close();
-
-    final beamShader = LinearGradient(
-      colors: [
-        AppTheme.electricCyan.withValues(alpha: 0.6),
-        AppTheme.electricCyan.withValues(alpha: 0.0),
-      ],
-    ).createShader(Rect.fromLTWH(headlightPos.dx, 0, w - headlightPos.dx, h));
-
-    canvas.drawPath(laserBeamPath, Paint()..shader = beamShader);
-  }
-
-  @override
-  bool shouldRepaint(covariant _ForegroundEffectsPainter oldDelegate) {
-    return oldDelegate.animValue != animValue || oldDelegate.rumbleY != rumbleY;
   }
 }
