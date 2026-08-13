@@ -49,6 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       _bikesSubscription = _firestoreService.bikesStream.listen((firestoreBikes) {
         if (mounted) {
+          // Sort by ID to preserve 1 to 50 ranking order
+          firestoreBikes.sort((a, b) => a.id.compareTo(b.id));
           setState(() {
             cloudBikes = firestoreBikes;
           });

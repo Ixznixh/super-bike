@@ -23,18 +23,16 @@ class FirestoreService {
     await _bikesRef.doc(bike.id).set(bike.toMap());
   }
 
-  // Sync and Seed All Initial Flagship Superbikes to Firebase Firestore
+  // Sync and Seed All 50 Flagship Superbikes to Firebase Firestore
   Future<void> syncAllBikesToFirebase() async {
     try {
-      final snapshot = await _bikesRef.get();
-      // If collection has fewer docs than initial bikes, seed all initial bikes to Firestore
-      if (snapshot.docs.length < SuperbikeData.initialBikes.length) {
-        for (var bike in SuperbikeData.initialBikes) {
-          await _bikesRef.doc(bike.id).set(bike.toMap(), SetOptions(merge: true));
-        }
+      final batch = _db.batch();
+      for (var bike in SuperbikeData.initialBikes) {
+        batch.set(_bikesRef.doc(bike.id), bike.toMap(), SetOptions(merge: true));
       }
+      await batch.commit();
     } catch (e) {
-      // Print debug info if offline or permission pending
+      // Log debug info if offline or rule restriction
       print('Firestore sync info: $e');
     }
   }
