@@ -5,7 +5,7 @@ import '../theme/app_theme.dart';
 class AnimatedRiderHero extends StatefulWidget {
   final double height;
 
-  const AnimatedRiderHero({super.key, this.height = 170});
+  const AnimatedRiderHero({super.key, this.height = 180});
 
   @override
   State<AnimatedRiderHero> createState() => _AnimatedRiderHeroState();
@@ -20,7 +20,7 @@ class _AnimatedRiderHeroState extends State<AnimatedRiderHero>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1400),
+      duration: const Duration(milliseconds: 1200),
     )..repeat();
   }
 
@@ -35,13 +35,73 @@ class _AnimatedRiderHeroState extends State<AnimatedRiderHero>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
+        final val = _controller.value;
+        // Micro engine rumble vibration (1.2px vertical oscillation)
+        final rumbleY = sin(val * 2 * pi * 4) * 1.2;
+
         return SizedBox(
           height: widget.height,
           width: double.infinity,
-          child: CustomPaint(
-            painter: _IconBikerAirflowPainter(
-              animValue: _controller.value,
-            ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              // 1. Background Airflow & Speed Streamlines Layer
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: _AirflowMotionPainter(animValue: val),
+                ),
+              ),
+
+              // 2. Main Biker Image (Without altering main picture, keying white to transparent)
+              Transform.translate(
+                offset: Offset(0, rumbleY),
+                child: Container(
+                  height: widget.height,
+                  alignment: Alignment.center,
+                  child: ShaderMask(
+                    shaderCallback: (bounds) {
+                      return const LinearGradient(
+                        colors: [Colors.white, Colors.white],
+                      ).createShader(bounds);
+                    },
+                    blendMode: BlendMode.dst,
+                    child: ColorFiltered(
+                      colorFilter: const ColorFilter.matrix(<double>[
+                        // Matrix to key out white background: (Red + Green + Blue)/3 inversion for alpha
+                        1, 0, 0, 0, 0,
+                        0, 1, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        -0.33, -0.33, -0.33, 1, 255,
+                      ]),
+                      child: Image.asset(
+                        'assets/images/biker_hero.png',
+                        height: widget.height,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          // Fallback in case asset path is loading on web
+                          return Image.network(
+                            'assets/biker_hero.png',
+                            height: widget.height,
+                            fit: BoxFit.contain,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              // 3. Foreground Motion Effects (Wheel Spoke Rims, Exhaust Flames, Headlight Flare)
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: _ForegroundEffectsPainter(
+                    animValue: val,
+                    rumbleY: rumbleY,
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
@@ -49,334 +109,180 @@ class _AnimatedRiderHeroState extends State<AnimatedRiderHero>
   }
 }
 
-class _IconBikerAirflowPainter extends CustomPainter {
+class _AirflowMotionPainter extends CustomPainter {
   final double animValue;
 
-  _IconBikerAirflowPainter({required this.animValue});
+  _AirflowMotionPainter({required this.animValue});
 
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final h = size.height;
 
-    // Scale reference box based on canvas dimensions
-    final bikeScale = min(w / 320.0, h / 160.0);
-    final cx = w * 0.48;
-    final cy = h * 0.52;
-
-    // Wheel Centers
-    final rearCenter = Offset(cx - 75 * bikeScale, cy + 25 * bikeScale);
-    final frontCenter = Offset(cx + 85 * bikeScale, cy + 25 * bikeScale);
-    final wheelR = 26 * bikeScale;
-
-    // -----------------------------------------------------------------
-    // 1. AERODYNAMIC AIR FLOW STREAMS (Wind Tunnel Dynamic Animations)
-    // -----------------------------------------------------------------
+    // Aerodynamic Wind Tunnel Streamlines wrapping over the rider
     final airPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    void drawAirStream({
-      required Path basePath,
-      required double strokeWidth,
-      required Color color,
-      required double phaseOffset,
-      required double dashLength,
-    }) {
-      final pathMetrics = basePath.computeMetrics();
-      for (final metric in pathMetrics) {
-        final totalLength = metric.length;
-        final progress = (animValue + phaseOffset) % 1.0;
-        final startDist = (progress * totalLength);
-        final endDist = min(startDist + dashLength, totalLength);
+    void drawStream(Path path, Color color, double strokeWidth, double phase, double dashLen) {
+      final metrics = path.computeMetrics();
+      for (final m in metrics) {
+        final len = m.length;
+        final progress = (animValue + phase) % 1.0;
+        final start = progress * len;
+        final end = min(start + dashLen, len);
 
-        if (startDist < totalLength) {
-          final extractPath = metric.extractPath(startDist, endDist);
+        if (start < len) {
           airPaint
             ..color = color
             ..strokeWidth = strokeWidth
             ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 2);
-          canvas.drawPath(extractPath, airPaint);
+          canvas.drawPath(m.extractPath(start, end), airPaint);
         }
-
-        // Loop second segment for continuous stream wrap
-        if (startDist + dashLength > totalLength) {
-          final wrapEnd = (startDist + dashLength) - totalLength;
-          final wrapPath = metric.extractPath(0, wrapEnd);
+        if (start + dashLen > len) {
+          final wrapEnd = (start + dashLen) - len;
           airPaint
             ..color = color
             ..strokeWidth = strokeWidth
             ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 2);
-          canvas.drawPath(wrapPath, airPaint);
+          canvas.drawPath(m.extractPath(0, wrapEnd), airPaint);
         }
       }
     }
 
-    // Stream 1: High stream over helmet
-    final streamTop = Path();
-    streamTop.moveTo(cx + 140 * bikeScale, cy - 65 * bikeScale);
-    streamTop.cubicTo(
-      cx + 70 * bikeScale, cy - 75 * bikeScale,
-      cx - 20 * bikeScale, cy - 75 * bikeScale,
-      cx - 130 * bikeScale, cy - 60 * bikeScale,
-    );
-    drawAirStream(
-      basePath: streamTop,
-      strokeWidth: 2.2,
-      color: AppTheme.electricCyan.withValues(alpha: 0.9),
-      phaseOffset: 0.0,
-      dashLength: 70 * bikeScale,
-    );
+    // Top Airflow Stream over Helmet
+    final pathTop = Path()
+      ..moveTo(w * 0.95, h * 0.12)
+      ..cubicTo(w * 0.70, h * 0.05, w * 0.40, h * 0.05, w * 0.05, h * 0.15);
+    drawStream(pathTop, AppTheme.electricCyan.withValues(alpha: 0.9), 2.4, 0.0, 75);
 
-    // Stream 2: Contour wrapping directly over Rider Helmet & Back
-    final streamHelmet = Path();
-    streamHelmet.moveTo(cx + 120 * bikeScale, cy - 35 * bikeScale);
-    streamHelmet.cubicTo(
-      cx + 50 * bikeScale, cy - 48 * bikeScale, // Front nose & helmet dip
-      cx - 20 * bikeScale, cy - 65 * bikeScale, // Over helmet dome & spine
-      cx - 140 * bikeScale, cy - 40 * bikeScale, // Flowing off back
-    );
-    drawAirStream(
-      basePath: streamHelmet,
-      strokeWidth: 2.8,
-      color: Colors.white.withValues(alpha: 0.95),
-      phaseOffset: 0.25,
-      dashLength: 85 * bikeScale,
-    );
+    // Helmet Contour Airflow Stream
+    final pathHelmet = Path()
+      ..moveTo(w * 0.90, h * 0.32)
+      ..cubicTo(w * 0.75, h * 0.18, w * 0.50, h * 0.08, w * 0.10, h * 0.28);
+    drawStream(pathHelmet, Colors.white.withValues(alpha: 0.95), 2.8, 0.3, 85);
 
-    // Stream 3: Mid stream over Tank & Arms
-    final streamMid = Path();
-    streamMid.moveTo(cx + 130 * bikeScale, cy - 10 * bikeScale);
-    streamMid.cubicTo(
-      cx + 60 * bikeScale, cy - 22 * bikeScale,
-      cx + 10 * bikeScale, cy - 30 * bikeScale,
-      cx - 120 * bikeScale, cy - 20 * bikeScale,
-    );
-    drawAirStream(
-      basePath: streamMid,
-      strokeWidth: 2.0,
-      color: AppTheme.electricCyan.withValues(alpha: 0.75),
-      phaseOffset: 0.5,
-      dashLength: 60 * bikeScale,
-    );
+    // Tank & Arm Airflow Stream
+    final pathMid = Path()
+      ..moveTo(w * 0.92, h * 0.52)
+      ..cubicTo(w * 0.70, h * 0.42, w * 0.45, h * 0.35, w * 0.05, h * 0.48);
+    drawStream(pathMid, AppTheme.electricCyan.withValues(alpha: 0.75), 2.0, 0.6, 65);
 
-    // Stream 4: Low stream under chassis & rear wheel
-    final streamLow = Path();
-    streamLow.moveTo(cx + 130 * bikeScale, cy + 30 * bikeScale);
-    streamLow.cubicTo(
-      cx + 50 * bikeScale, cy + 20 * bikeScale,
-      cx - 30 * bikeScale, cy + 20 * bikeScale,
-      cx - 130 * bikeScale, cy + 28 * bikeScale,
-    );
-    drawAirStream(
-      basePath: streamLow,
-      strokeWidth: 2.4,
-      color: AppTheme.neonRed.withValues(alpha: 0.8),
-      phaseOffset: 0.75,
-      dashLength: 65 * bikeScale,
-    );
-
-    // -----------------------------------------------------------------
-    // 2. ROAD SPEED PULSES UNDER TIRES
-    // -----------------------------------------------------------------
-    final groundY = rearCenter.dy + wheelR + 2 * bikeScale;
+    // Ground Speed Asphalt Lines under tires
+    final groundY = h * 0.88;
     final groundPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2 * bikeScale
+      ..strokeWidth = 2.0
       ..strokeCap = StrokeCap.round;
 
-    for (int g = 0; g < 6; g++) {
-      final gProgress = (animValue + g * 0.16) % 1.0;
-      final gx1 = w * (1.1 - gProgress * 1.2);
-      final gx2 = gx1 - 35 * bikeScale;
-      groundPaint.color = AppTheme.electricCyan.withValues(alpha: (1.0 - gProgress) * 0.5);
+    for (int g = 0; g < 7; g++) {
+      final gProg = (animValue + g * 0.14) % 1.0;
+      final gx1 = w * (1.1 - gProg * 1.2);
+      final gx2 = gx1 - 40;
+      groundPaint.color = AppTheme.electricCyan.withValues(alpha: (1.0 - gProg) * 0.45);
       canvas.drawLine(Offset(gx1, groundY), Offset(gx2, groundY), groundPaint);
     }
-
-    // -----------------------------------------------------------------
-    // 3. EXACT VECTOR SILHOUETTE OF THE BIKER (TRANSPARENT BACKGROUND)
-    // -----------------------------------------------------------------
-    final bPaint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill;
-
-    final outlinePaint = Paint()
-      ..color = const Color(0xFF0F172A)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5 * bikeScale;
-
-    // --- SPINNING WHEELS (Matching exact icon position) ---
-    void drawIconWheel(Offset center) {
-      // Outer Tire
-      canvas.drawCircle(center, wheelR, bPaint);
-      // Inner Hub Hole (Cutout transparent)
-      canvas.drawCircle(center, wheelR - 7 * bikeScale, Paint()..color = AppTheme.background);
-      canvas.drawCircle(center, wheelR - 7 * bikeScale, outlinePaint);
-
-      // Spinning 4-Spoke Cross
-      final spokeP = Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 4.5 * bikeScale;
-
-      final rot = animValue * 2 * pi * 3;
-      for (int s = 0; s < 4; s++) {
-        final angle = rot + (s * pi / 2);
-        final sx = center.dx + (wheelR - 7 * bikeScale) * cos(angle);
-        final sy = center.dy + (wheelR - 7 * bikeScale) * sin(angle);
-        canvas.drawLine(center, Offset(sx, sy), spokeP);
-      }
-
-      // Center Axle Pin
-      canvas.drawCircle(center, 5 * bikeScale, bPaint);
-    }
-
-    drawIconWheel(rearCenter);
-    drawIconWheel(frontCenter);
-
-    // --- REAR FENDER ---
-    final rearFenderPath = Path();
-    rearFenderPath.addArc(
-      Rect.fromCircle(center: rearCenter, radius: wheelR + 4 * bikeScale),
-      pi * 1.1,
-      pi * 0.55,
-    );
-    canvas.drawPath(
-      rearFenderPath,
-      Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 6 * bikeScale
-        ..strokeCap = StrokeCap.round,
-    );
-
-    // --- CHASSIS FRAME & LOWER EXHAUST PIPE ---
-    final framePath = Path();
-    // Lower Frame Bar connecting rear axle to engine and exhaust
-    framePath.moveTo(rearCenter.dx, rearCenter.dy);
-    framePath.lineTo(cx - 30 * bikeScale, cy + 25 * bikeScale);
-    framePath.lineTo(cx + 25 * bikeScale, cy + 25 * bikeScale); // Engine base
-    framePath.lineTo(cx + 52 * bikeScale, cy - 5 * bikeScale);  // Front down tube
-    framePath.lineTo(cx + 42 * bikeScale, cy - 35 * bikeScale); // Steering neck
-    framePath.lineTo(cx + 82 * bikeScale, cy + 25 * bikeScale); // Front fork to front wheel
-    
-    final frameBarPaint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 5 * bikeScale
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-    canvas.drawPath(framePath, frameBarPaint);
-
-    // Exhaust Pipe (Running straight back under footrest)
-    final exhaustPath = Path();
-    exhaustPath.moveTo(cx + 20 * bikeScale, cy + 22 * bikeScale);
-    exhaustPath.lineTo(cx - 55 * bikeScale, cy + 22 * bikeScale);
-    canvas.drawPath(
-      exhaustPath,
-      Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 4 * bikeScale
-        ..strokeCap = StrokeCap.round,
-    );
-
-    // --- ENGINE BLOCK ---
-    final enginePath = Path();
-    enginePath.moveTo(cx + 5 * bikeScale, cy + 5 * bikeScale);
-    enginePath.lineTo(cx + 28 * bikeScale, cy + 5 * bikeScale);
-    enginePath.lineTo(cx + 28 * bikeScale, cy + 24 * bikeScale);
-    enginePath.lineTo(cx + 5 * bikeScale, cy + 24 * bikeScale);
-    enginePath.close();
-    canvas.drawPath(enginePath, bPaint);
-
-    // --- FUEL TANK (Classic Sculpted Droplet Tank) ---
-    final tankPath = Path();
-    tankPath.moveTo(cx - 10 * bikeScale, cy - 5 * bikeScale);
-    tankPath.cubicTo(
-      cx + 5 * bikeScale, cy - 25 * bikeScale,
-      cx + 35 * bikeScale, cy - 25 * bikeScale,
-      cx + 45 * bikeScale, cy - 8 * bikeScale,
-    );
-    tankPath.lineTo(cx + 20 * bikeScale, cy - 4 * bikeScale);
-    tankPath.close();
-    canvas.drawPath(tankPath, bPaint);
-
-    // --- FRONT HEADLIGHT ---
-    canvas.drawCircle(Offset(cx + 46 * bikeScale, cy - 32 * bikeScale), 7 * bikeScale, bPaint);
-
-    // --- HIGH HANDLEBARS ---
-    final handlebarPath = Path();
-    handlebarPath.moveTo(cx + 42 * bikeScale, cy - 35 * bikeScale);
-    handlebarPath.lineTo(cx + 25 * bikeScale, cy - 45 * bikeScale);
-    handlebarPath.lineTo(cx + 20 * bikeScale, cy - 42 * bikeScale);
-    canvas.drawPath(
-      handlebarPath,
-      Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 4.5 * bikeScale
-        ..strokeCap = StrokeCap.round,
-    );
-
-    // --- RIDER SILHOUETTE (Exact matching posture from uploaded image) ---
-    // 1. Round Open-Face Helmet & Face Contour
-    final headCenter = Offset(cx - 20 * bikeScale, cy - 60 * bikeScale);
-    canvas.drawCircle(headCenter, 14 * bikeScale, bPaint);
-    // Chin cutout curve for face profile
-    final faceCutout = Path();
-    faceCutout.moveTo(headCenter.dx + 4 * bikeScale, headCenter.dy - 6 * bikeScale);
-    faceCutout.lineTo(headCenter.dx + 15 * bikeScale, headCenter.dy - 6 * bikeScale);
-    faceCutout.lineTo(headCenter.dx + 15 * bikeScale, headCenter.dy + 8 * bikeScale);
-    faceCutout.lineTo(headCenter.dx + 7 * bikeScale, headCenter.dy + 8 * bikeScale);
-    faceCutout.close();
-    canvas.drawPath(faceCutout, Paint()..color = AppTheme.background);
-
-    // Nose & Chin detail pin
-    canvas.drawCircle(
-      Offset(headCenter.dx + 10 * bikeScale, headCenter.dy + 1 * bikeScale),
-      2.5 * bikeScale,
-      bPaint,
-    );
-
-    // 2. Rider Torso (Upright Body)
-    final torsoPath = Path();
-    torsoPath.moveTo(cx - 38 * bikeScale, cy - 25 * bikeScale); // Seat hips
-    torsoPath.lineTo(cx - 28 * bikeScale, cy - 48 * bikeScale); // Back spine to shoulder
-    torsoPath.lineTo(cx - 10 * bikeScale, cy - 48 * bikeScale); // Chest
-    torsoPath.lineTo(cx - 20 * bikeScale, cy - 25 * bikeScale); // Lap
-    torsoPath.close();
-    canvas.drawPath(torsoPath, bPaint);
-
-    // 3. Extended Arms holding Handlebars
-    final armPath = Path();
-    armPath.moveTo(cx - 15 * bikeScale, cy - 46 * bikeScale); // Shoulder
-    armPath.lineTo(cx + 12 * bikeScale, cy - 44 * bikeScale); // Arm
-    armPath.lineTo(cx + 20 * bikeScale, cy - 42 * bikeScale); // Hand on grip
-    canvas.drawPath(
-      armPath,
-      Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 6 * bikeScale
-        ..strokeCap = StrokeCap.round,
-    );
-
-    // 4. Bent Leg & Riding Boot (Right Angle to Footpeg)
-    final legPath = Path();
-    legPath.moveTo(cx - 22 * bikeScale, cy - 25 * bikeScale); // Hip
-    legPath.lineTo(cx - 10 * bikeScale, cy - 4 * bikeScale);  // Thigh to Knee
-    legPath.lineTo(cx - 10 * bikeScale, cy + 18 * bikeScale); // Shin down
-    legPath.lineTo(cx + 5 * bikeScale, cy + 18 * bikeScale);  // Boot forward on footrest
-    legPath.lineTo(cx + 5 * bikeScale, cy + 10 * bikeScale);
-    legPath.lineTo(cx - 2 * bikeScale, cy + 10 * bikeScale);
-    legPath.lineTo(cx - 2 * bikeScale, cy - 4 * bikeScale);
-    legPath.close();
-    canvas.drawPath(legPath, bPaint);
   }
 
   @override
-  bool shouldRepaint(covariant _IconBikerAirflowPainter oldDelegate) {
+  bool shouldRepaint(covariant _AirflowMotionPainter oldDelegate) {
     return oldDelegate.animValue != animValue;
+  }
+}
+
+class _ForegroundEffectsPainter extends CustomPainter {
+  final double animValue;
+  final double rumbleY;
+
+  _ForegroundEffectsPainter({
+    required this.animValue,
+    required this.rumbleY,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+
+    // Center offsets corresponding to the picture proportions
+    final imgWidth = min(w, h * 1.5);
+    final imgLeft = (w - imgWidth) / 2;
+
+    // Coordinates mapped to the image dimensions
+    final rearWheel = Offset(imgLeft + imgWidth * 0.21, h * 0.74 + rumbleY);
+    final frontWheel = Offset(imgLeft + imgWidth * 0.83, h * 0.74 + rumbleY);
+    final wheelRadius = imgWidth * 0.145;
+
+    final headlightPos = Offset(imgLeft + imgWidth * 0.88, h * 0.48 + rumbleY);
+    final exhaustPos = Offset(imgLeft + imgWidth * 0.34, h * 0.73 + rumbleY);
+
+    // 1. ROTATING NEON WHEEL SPOKE GLOW OVERLAYS
+    void drawWheelMotion(Offset center) {
+      final rimGlow = Paint()
+        ..color = AppTheme.electricCyan.withValues(alpha: 0.7)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.5
+        ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 3);
+      canvas.drawCircle(center, wheelRadius - 3, rimGlow);
+
+      // Rotating Spoke Lines
+      final spokePaint = Paint()
+        ..color = AppTheme.electricCyan.withValues(alpha: 0.85)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.8;
+
+      const numSpokes = 5;
+      final rotation = animValue * 2 * pi * 4; // High speed rotation
+
+      for (int i = 0; i < numSpokes; i++) {
+        final angle = rotation + (i * 2 * pi / numSpokes);
+        final sx = center.dx + (wheelRadius - 6) * cos(angle);
+        final sy = center.dy + (wheelRadius - 6) * sin(angle);
+        canvas.drawLine(center, Offset(sx, sy), spokePaint);
+      }
+    }
+
+    drawWheelMotion(rearWheel);
+    drawWheelMotion(frontWheel);
+
+    // 2. EXHAUST BURNOUT SMOKE & TURBO AFTERBURNER FLAMES
+    final flamePaint = Paint()..style = PaintingStyle.fill;
+    for (int f = 0; f < 6; f++) {
+      final fProg = (animValue + f * 0.16) % 1.0;
+      final fx = exhaustPos.dx - fProg * 45;
+      final fy = exhaustPos.dy + sin(fProg * pi * 4) * 3;
+      final fRadius = 6.5 * (1.0 - fProg);
+      flamePaint.color = (f % 2 == 0 ? AppTheme.neonRed : Colors.orangeAccent)
+          .withValues(alpha: (1.0 - fProg) * 0.85);
+      canvas.drawCircle(Offset(fx, fy), fRadius, flamePaint);
+    }
+
+    // 3. HEADLIGHT PULSING LED LENS FLARE
+    final flareRadius = 14.0 + sin(animValue * 2 * pi * 2) * 4.0;
+    final flarePaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.95)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 8);
+    canvas.drawCircle(headlightPos, flareRadius, flarePaint);
+
+    final laserBeamPath = Path();
+    laserBeamPath.moveTo(headlightPos.dx, headlightPos.dy - 3);
+    laserBeamPath.lineTo(w, headlightPos.dy - 20);
+    laserBeamPath.lineTo(w, headlightPos.dy + 25);
+    laserBeamPath.lineTo(headlightPos.dx, headlightPos.dy + 3);
+    laserBeamPath.close();
+
+    final beamShader = LinearGradient(
+      colors: [
+        AppTheme.electricCyan.withValues(alpha: 0.6),
+        AppTheme.electricCyan.withValues(alpha: 0.0),
+      ],
+    ).createShader(Rect.fromLTWH(headlightPos.dx, 0, w - headlightPos.dx, h));
+
+    canvas.drawPath(laserBeamPath, Paint()..shader = beamShader);
+  }
+
+  @override
+  bool shouldRepaint(covariant _ForegroundEffectsPainter oldDelegate) {
+    return oldDelegate.animValue != animValue || oldDelegate.rumbleY != rumbleY;
   }
 }
