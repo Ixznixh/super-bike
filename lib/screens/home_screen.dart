@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const Icon(Icons.two_wheeler_rounded, color: AppTheme.neonRed, size: 28),
             const SizedBox(width: 10),
             Text(
-              'APEX VELOCITY',
+              'GARAGE OF VELOCITY',
               style: TextStyle(
                 fontFamily: 'Orbitron',
                 fontSize: isDesktop ? 20 : 16,

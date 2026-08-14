@@ -22,7 +22,7 @@ class ApexSuperbikeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'APEX VELOCITY | Superbike Telemetry & Heritage',
+      title: 'GARAGE OF VELOCITY | Superbike Telemetry & Heritage',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
       home: const HomeScreen(),
