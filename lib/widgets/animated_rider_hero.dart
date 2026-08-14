@@ -62,10 +62,27 @@ class _AnimatedRiderHeroState extends State<AnimatedRiderHero>
                   height: widget.height * 0.9,
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) {
-                    return Image.network(
-                      'assets/biker_hero.png',
-                      height: widget.height * 0.9,
-                      fit: BoxFit.contain,
+                    return Container(
+                      height: widget.height * 0.85,
+                      width: widget.height * 0.85,
+                      decoration: BoxDecoration(
+                        color: AppTheme.surface.withValues(alpha: 0.8),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppTheme.electricCyan, width: 2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.electricCyan.withValues(alpha: 0.3),
+                            blurRadius: 16,
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.two_wheeler_rounded,
+                          size: 52,
+                          color: AppTheme.triumphRed,
+                        ),
+                      ),
                     );
                   },
                 ),
