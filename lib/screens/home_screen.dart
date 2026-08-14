@@ -7,6 +7,9 @@ import '../services/auth_service.dart';
 import '../services/firestore_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/auth_dialog.dart';
+import '../widgets/floating_concierge_button.dart';
+import '../widgets/hero_carousel_banner.dart';
+import '../widgets/manufacturer_header.dart';
 import '../widgets/spec_comparison_modal.dart';
 import 'bike_detail_screen.dart';
 
@@ -144,241 +147,193 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth > 900;
-    final featuredBike = allBikes.isNotEmpty ? allBikes.first : null;
 
     return Scaffold(
       backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        title: Row(
-          children: [
-            const Icon(Icons.two_wheeler_rounded, color: AppTheme.neonRed, size: 28),
-            const SizedBox(width: 10),
-            Text(
-              'GARAGE OF VELOCITY',
-              style: TextStyle(
-                fontFamily: 'Orbitron',
-                fontSize: isDesktop ? 20 : 16,
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
-                letterSpacing: 1.5,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: AppTheme.electricCyan.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: AppTheme.electricCyan, width: 0.8),
-              ),
-              child: const Text(
-                'FIREBASE SYNC',
-                style: TextStyle(
-                  fontFamily: 'Orbitron',
-                  fontSize: 9,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.electricCyan,
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              // Top Manufacturer Portal Header
+              SliverToBoxAdapter(
+                child: ManufacturerHeader(
+                  currentUser: currentUser,
+                  onLoginTap: _openAuthDialog,
+                  onLogoutTap: () => _authService.signOut(),
+                  onNavSelect: (section) {
+                    if (section == 'SUPERBIKES' || section == 'SPECS') {
+                      setState(() {
+                        selectedBrand = 'ALL';
+                        searchQuery = '';
+                      });
+                    }
+                  },
                 ),
               ),
-            ),
-          ],
-        ),
-        actions: [
-          // Firebase Auth User Account Indicator
-          if (currentUser != null) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Chip(
-                avatar: const Icon(Icons.person_rounded, size: 16, color: AppTheme.electricCyan),
-                label: Text(
-                  currentUser!.isAnonymous
-                      ? 'Guest'
-                      : (currentUser!.email?.split('@').first ?? 'User'),
-                  style: const TextStyle(
-                    fontFamily: 'Rajdhani',
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                backgroundColor: const Color(0xFF161A23),
-                side: const BorderSide(color: AppTheme.electricCyan),
-              ),
-            ),
-            IconButton(
-              tooltip: 'Sign Out',
-              icon: const Icon(Icons.logout_rounded, color: AppTheme.neonRed, size: 20),
-              onPressed: () => _authService.signOut(),
-            ),
-          ] else ...[
-            OutlinedButton.icon(
-              onPressed: _openAuthDialog,
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppTheme.electricCyan, width: 1.5),
-                foregroundColor: AppTheme.electricCyan,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              ),
-              icon: const Icon(Icons.key_rounded, size: 16),
-              label: const Text(
-                'LOG IN / REGISTER',
-                style: TextStyle(
-                  fontFamily: 'Orbitron',
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ),
-          ],
 
-          if (allBikes.isNotEmpty)
-            IconButton(
-              tooltip: 'Compare Specs',
-              icon: const Icon(Icons.compare_arrows_rounded, color: AppTheme.vividGold),
-              onPressed: () => _openComparisonModal(allBikes.first),
-            ),
-          const SizedBox(width: 12),
-        ],
-      ),
-      body: CustomScrollView(
-        slivers: [
-          // Leaderboard Ticker Banner
-          SliverToBoxAdapter(
-            child: Container(
-              color: const Color(0xFF0D1017),
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    const Icon(Icons.bolt, color: AppTheme.vividGold, size: 16),
-                    const SizedBox(width: 6),
-                    const Text(
-                      'COMMUNITY TELEMETRY LEADERBOARD: ',
-                      style: TextStyle(
-                        fontFamily: 'Orbitron',
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.vividGold,
-                      ),
-                    ),
-                    ...allBikes.map((b) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: Text(
-                          '${b.brand} ${b.name}: ${b.specs.topSpeedKmh} km/h (${b.specs.horsepower} HP)  •',
-                          style: const TextStyle(
-                            fontFamily: 'Rajdhani',
-                            fontSize: 13,
-                            color: Color(0xFF94A3B8),
-                          ),
+              // Full-Bleed Hero Carousel Slider
+              if (searchQuery.isEmpty && selectedBrand == 'ALL' && accessibleBikes.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: HeroCarouselBanner(
+                    featuredBikes: accessibleBikes.take(5).toList(),
+                    onExploreBike: (bike) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BikeDetailScreen(bike: bike, allBikes: allBikes),
                         ),
                       );
-                    }),
-                  ],
+                    },
+                  ),
+                ),
+
+              // Leaderboard Ticker Banner
+              SliverToBoxAdapter(
+                child: Container(
+                  color: const Color(0xFF090B0F),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        const Icon(Icons.bolt, color: AppTheme.vividGold, size: 16),
+                        const SizedBox(width: 6),
+                        const Text(
+                          'OFFICIAL TELEMETRY LEADERBOARD: ',
+                          style: TextStyle(
+                            fontFamily: 'Orbitron',
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.vividGold,
+                          ),
+                        ),
+                        ...allBikes.map((b) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: Text(
+                              '${b.brand} ${b.name}: ${b.specs.topSpeedKmh} km/h (${b.specs.horsepower} HP)  •',
+                              style: const TextStyle(
+                                fontFamily: 'Rajdhani',
+                                fontSize: 13,
+                                color: Color(0xFF94A3B8),
+                              ),
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
 
-          // Search and Brand Filter Controls
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+              // Search and Brand Filter Controls
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _searchController,
-                          onChanged: (val) => setState(() => searchQuery = val),
-                          style: const TextStyle(color: Colors.white, fontFamily: 'Rajdhani'),
-                          decoration: InputDecoration(
-                            hintText: 'Search by model name, brand, or community specs...',
-                            hintStyle: const TextStyle(color: Color(0xFF64748B)),
-                            prefixIcon: const Icon(Icons.search, color: AppTheme.electricCyan),
-                            filled: true,
-                            fillColor: const Color(0xFF161A23),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFF2D3548)),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFF2D3548)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.electricCyan),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _searchController,
+                              onChanged: (val) => setState(() => searchQuery = val),
+                              style: const TextStyle(color: Colors.white, fontFamily: 'Rajdhani'),
+                              decoration: InputDecoration(
+                                hintText: 'Search by model name, brand, or community specs...',
+                                hintStyle: const TextStyle(color: Color(0xFF64748B)),
+                                prefixIcon: const Icon(Icons.search, color: AppTheme.triumphRed),
+                                filled: true,
+                                fillColor: const Color(0xFF161A23),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: const BorderSide(color: Color(0xFF2D3548)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: const BorderSide(color: Color(0xFF2D3548)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: const BorderSide(color: AppTheme.triumphRed),
+                                ),
+                              ),
                             ),
                           ),
+                          if (allBikes.isNotEmpty) ...[
+                            const SizedBox(width: 12),
+                            OutlinedButton.icon(
+                              onPressed: () => _openComparisonModal(allBikes.first),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppTheme.vividGold,
+                                side: const BorderSide(color: AppTheme.vividGold, width: 1.2),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                              ),
+                              icon: const Icon(Icons.compare_arrows_rounded, size: 18),
+                              label: const Text(
+                                'COMPARE SPECS',
+                                style: TextStyle(
+                                  fontFamily: 'Orbitron',
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Brand Selector Pills (Triumph Red Accent)
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: availableBrands.map((brand) {
+                            final isSelected = selectedBrand == brand;
+                            final top5Brands = accessibleBikes.map((b) => b.brand.toUpperCase()).toSet();
+                            final isLockedForGuest = currentUser == null && brand != 'ALL' && !top5Brands.contains(brand);
+
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: ChoiceChip(
+                                avatar: isLockedForGuest
+                                    ? const Icon(Icons.lock_rounded, size: 12, color: Color(0xFF64748B))
+                                    : null,
+                                label: Text(
+                                  brand,
+                                  style: TextStyle(
+                                    fontFamily: 'Orbitron',
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : (isLockedForGuest ? const Color(0xFF64748B) : Colors.white70),
+                                  ),
+                                ),
+                                selected: isSelected,
+                                selectedColor: AppTheme.triumphRed,
+                                backgroundColor: const Color(0xFF161A23),
+                                side: BorderSide(
+                                  color: isSelected
+                                      ? AppTheme.triumphRed
+                                      : (isLockedForGuest ? const Color(0xFF1E293B) : const Color(0xFF2D3548)),
+                                ),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                onSelected: (selected) {
+                                  if (selected) _onSelectBrand(brand);
+                                },
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 16),
-
-                  // Brand Selector Pills
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: availableBrands.map((brand) {
-                        final isSelected = selectedBrand == brand;
-                        final top5Brands = accessibleBikes.map((b) => b.brand.toUpperCase()).toSet();
-                        final isLockedForGuest = currentUser == null && brand != 'ALL' && !top5Brands.contains(brand);
-
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: ChoiceChip(
-                            avatar: isLockedForGuest
-                                ? const Icon(Icons.lock_rounded, size: 12, color: Color(0xFF64748B))
-                                : null,
-                            label: Text(
-                              brand,
-                              style: TextStyle(
-                                fontFamily: 'Orbitron',
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: isSelected
-                                    ? Colors.black
-                                    : (isLockedForGuest ? const Color(0xFF64748B) : Colors.white),
-                              ),
-                            ),
-                            selected: isSelected,
-                            selectedColor: AppTheme.electricCyan,
-                            backgroundColor: const Color(0xFF161A23),
-                            side: BorderSide(
-                              color: isSelected
-                                  ? AppTheme.electricCyan
-                                  : (isLockedForGuest ? const Color(0xFF1E293B) : const Color(0xFF2D3548)),
-                            ),
-                            onSelected: (selected) {
-                              if (selected) _onSelectBrand(brand);
-                            },
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-
-          // Featured Hero Superbike Banner
-          if (featuredBike != null && searchQuery.isEmpty && selectedBrand == 'ALL')
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: _buildHeroBanner(featuredBike, isDesktop),
-              ),
-            ),
 
           // Garage Grid Title
           SliverToBoxAdapter(
@@ -611,141 +566,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeroBanner(Superbike bike, bool isDesktop) {
-    return Container(
-      decoration: AppTheme.glassDecoration(borderColor: bike.accentColor),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Image.network(
-                bike.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (c, e, s) => Container(color: const Color(0xFF161A23)),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Colors.black.withValues(alpha: 0.92),
-                    Colors.black.withValues(alpha: 0.6),
-                    Colors.transparent,
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppTheme.neonRed,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Text(
-                      'FEATURED FLAGSHIP',
-                      style: TextStyle(
-                        fontFamily: 'Orbitron',
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '${bike.brand} ${bike.name}'.toUpperCase(),
-                    style: TextStyle(
-                      fontFamily: 'Orbitron',
-                      fontSize: isDesktop ? 26 : 20,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    bike.tagline,
-                    style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 13,
-                      color: Color(0xFF94A3B8),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      _buildQuickSpecBadge('${bike.specs.horsepower} HP', bike.accentColor),
-                      const SizedBox(width: 8),
-                      _buildQuickSpecBadge('${bike.specs.topSpeedKmh} KM/H', AppTheme.electricCyan),
-                      const SizedBox(width: 8),
-                      _buildQuickSpecBadge('${bike.specs.acceleration0to100}s 0-100', AppTheme.vividGold),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BikeDetailScreen(bike: bike, allBikes: allBikes),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: bike.accentColor,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                    child: const Text(
-                      'ENTER TELEMETRY DASHBOARD',
-                      style: TextStyle(
-                        fontFamily: 'Orbitron',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
-      ),
-    );
-  }
 
-  Widget _buildQuickSpecBadge(String text, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFF161A23).withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withValues(alpha: 0.6)),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontFamily: 'Orbitron',
-          fontSize: 11,
-          fontWeight: FontWeight.bold,
-          color: color,
+        // Floating WhatsApp & Test Ride Concierge Button
+        FloatingConciergeButton(
+          onRequestTestRide: () => _openAuthDialog(),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 
   Widget _buildBikeCard(Superbike bike) {
     return Card(

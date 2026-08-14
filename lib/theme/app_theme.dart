@@ -8,12 +8,14 @@ class AppTheme {
   static const Color cardDark = Color(0xFF1E2430);
   static const Color glassBorder = Color(0xFF2D3548);
 
-  // Accents
+  // Accents & Brand Colors
+  static const Color triumphRed = Color(0xFFE60012); // Triumph Racing Crimson
   static const Color neonRed = Color(0xFFFF2A54); // Ducati / Racing
   static const Color electricCyan = Color(0xFF00F0FF); // High Tech / Yamaha
-  static const Color neonGreen = Color(0xFF39FF14); // Kawasaki Lime
+  static const Color neonGreen = Color(0xFF25D366); // WhatsApp / Kawasaki
   static const Color vividGold = Color(0xFFFFD700); // Ohlins / Brembo
   static const Color bmwBlue = Color(0xFF0066FF); // BMW M
+  static const Color darkBanner = Color(0xFF10141D); // Header background
 
   static const Color textPrimary = Color(0xFFF0F4F8);
   static const Color textSecondary = Color(0xFF94A3B8);
