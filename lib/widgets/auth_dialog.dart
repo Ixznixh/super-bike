@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/auth_service.dart';
@@ -44,15 +45,19 @@ class _AuthDialogState extends State<AuthDialog> {
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      child: Container(
-        width: 440,
-        padding: const EdgeInsets.all(24),
-        decoration: AppTheme.glassDecoration(
-          borderColor: AppTheme.electricCyan,
-          fillColor: const Color(0xFF0D1017).withValues(alpha: 0.95),
-          borderRadius: 24,
-        ),
-        child: Column(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            width: 440,
+            padding: const EdgeInsets.all(24),
+            decoration: AppTheme.liquidGlassDecoration(
+              borderColor: AppTheme.electricCyan,
+              fillColor: const Color(0xFF0D1017).withValues(alpha: 0.75),
+              borderRadius: 24,
+            ),
+            child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Top Bar
@@ -177,6 +182,8 @@ class _AuthDialogState extends State<AuthDialog> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 }

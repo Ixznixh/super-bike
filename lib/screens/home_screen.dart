@@ -586,129 +586,139 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
   Widget _buildBikeCard(Superbike bike) {
-    return Card(
-      color: const Color(0xFF161A23),
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Color(0xFF2D3548), width: 1.2),
+    return Container(
+      decoration: AppTheme.liquidGlassDecoration(
+        fillColor: const Color(0xFF141923).withValues(alpha: 0.65),
+        borderColor: Colors.white.withValues(alpha: 0.16),
+        borderRadius: 20,
       ),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BikeDetailScreen(bike: bike, allBikes: allBikes),
-            ),
-          );
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.network(
-                    bike.imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (c, e, s) => Container(
-                      color: const Color(0xFF1E2430),
-                      child: const Icon(Icons.two_wheeler, size: 48, color: Color(0xFF2D3548)),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Colors.black.withValues(alpha: 0.8)],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.7),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: bike.accentColor),
-                      ),
-                      child: Text(
-                        bike.brand.toUpperCase(),
-                        style: TextStyle(
-                          fontFamily: 'Orbitron',
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: bike.accentColor,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BikeDetailScreen(bike: bike, allBikes: allBikes),
+                ),
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.network(
+                        bike.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (c, e, s) => Container(
+                          color: const Color(0xFF1E2430),
+                          child: const Icon(Icons.two_wheeler, size: 48, color: Color(0xFF2D3548)),
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    bike.displayTitle.toUpperCase(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Orbitron',
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    bike.specs.engineType,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 12,
-                      color: Color(0xFF94A3B8),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildMiniStat('${bike.specs.horsepower} HP', bike.accentColor),
-                      _buildMiniStat('${bike.specs.topSpeedKmh} km/h', AppTheme.electricCyan),
-                      _buildMiniStat('${bike.specs.dryWeightKg} kg', AppTheme.vividGold),
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.transparent, const Color(0xFF141923).withValues(alpha: 0.9)],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: AppTheme.liquidGlassPill(
+                            accentColor: bike.accentColor,
+                            isActive: true,
+                          ),
+                          child: Text(
+                            bike.brand.toUpperCase(),
+                            style: const TextStyle(
+                              fontFamily: 'Orbitron',
+                              fontSize: 9,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                              letterSpacing: 0.8,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ],
-              ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        bike.displayTitle.toUpperCase(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'Orbitron',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          letterSpacing: 0.8,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        bike.specs.engineType,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          color: Color(0xFF94A3B8),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildMiniStat('${bike.specs.horsepower} HP', bike.accentColor),
+                          _buildMiniStat('${bike.specs.topSpeedKmh} km/h', AppTheme.electricCyan),
+                          _buildMiniStat('${bike.specs.dryWeightKg} kg', AppTheme.vividGold),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildMiniStat(String text, Color color) {
-    return Column(
-      children: [
-        Text(
-          text,
-          style: TextStyle(
-            fontFamily: 'Orbitron',
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontFamily: 'Orbitron',
+          fontSize: 11,
+          fontWeight: FontWeight.bold,
+          color: color,
         ),
-      ],
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
@@ -87,19 +88,15 @@ class ManufacturerHeader extends StatelessWidget {
                   // User Auth Pill Button
                   InkWell(
                     onTap: currentUser == null ? onLoginTap : onLogoutTap,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(30),
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: isMobile ? 8 : 14,
-                        vertical: isMobile ? 4 : 6,
+                        horizontal: isMobile ? 10 : 16,
+                        vertical: isMobile ? 5 : 7,
                       ),
-                      decoration: BoxDecoration(
-                        color: currentUser == null ? AppTheme.triumphRed : const Color(0xFF1E293B),
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                          color: currentUser == null ? AppTheme.triumphRed : AppTheme.electricCyan,
-                          width: 1,
-                        ),
+                      decoration: AppTheme.liquidGlassPill(
+                        accentColor: AppTheme.triumphRed,
+                        isActive: true,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -132,16 +129,29 @@ class ManufacturerHeader extends StatelessWidget {
           ),
         ),
 
-        // Main Navigation Bar with Logo & Sections
+        // Main iOS Liquid Glass Navigation Bar
         Container(
-          color: const Color(0xFF10141D),
-          padding: EdgeInsets.symmetric(
-            horizontal: isMobile ? 12 : 24,
-            vertical: isMobile ? 10 : 14,
+          margin: EdgeInsets.symmetric(
+            horizontal: isMobile ? 8 : 16,
+            vertical: 6,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 12 : 24,
+                  vertical: isMobile ? 10 : 14,
+                ),
+                decoration: AppTheme.liquidGlassDecoration(
+                  fillColor: const Color(0xFF10141D).withValues(alpha: 0.75),
+                  borderColor: Colors.white.withValues(alpha: 0.18),
+                  borderRadius: 20,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
               // Brand Logo & Title
               Flexible(
                 child: InkWell(
@@ -228,9 +238,12 @@ class ManufacturerHeader extends StatelessWidget {
             ],
           ),
         ),
-      ],
-    );
-  }
+      ),
+    ),
+  ),
+],
+);
+}
 
   Widget _buildNavItem(String label, bool isHighlight, VoidCallback onTap) {
     return InkWell(

@@ -96,7 +96,7 @@ class AppTheme {
     double borderRadius = 16,
   }) {
     return BoxDecoration(
-      color: fillColor ?? surface.withOpacity(0.75),
+      color: fillColor ?? surface.withValues(alpha: 0.75),
       borderRadius: BorderRadius.circular(borderRadius),
       border: Border.all(
         color: borderColor ?? glassBorder,
@@ -104,11 +104,68 @@ class AppTheme {
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.4),
+          color: Colors.black.withValues(alpha: 0.4),
           blurRadius: 16,
           offset: const Offset(0, 8),
         ),
       ],
+    );
+  }
+
+  // iOS Liquid Glassmorphism Decoration Utility
+  static BoxDecoration liquidGlassDecoration({
+    Color? borderColor,
+    Color? fillColor,
+    double borderRadius = 20,
+    double glowOpacity = 0.25,
+  }) {
+    return BoxDecoration(
+      color: fillColor ?? const Color(0xFF141923).withValues(alpha: 0.65),
+      borderRadius: BorderRadius.circular(borderRadius),
+      border: Border.all(
+        color: borderColor ?? Colors.white.withValues(alpha: 0.16),
+        width: 1.2,
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.45),
+          blurRadius: 24,
+          offset: const Offset(0, 10),
+        ),
+        if (borderColor != null)
+          BoxShadow(
+            color: borderColor.withValues(alpha: glowOpacity),
+            blurRadius: 16,
+            spreadRadius: 0,
+          ),
+      ],
+    );
+  }
+
+  // iOS Liquid Glass Pill Button / Chip Utility
+  static BoxDecoration liquidGlassPill({
+    Color? accentColor,
+    bool isActive = false,
+  }) {
+    final activeColor = accentColor ?? triumphRed;
+    return BoxDecoration(
+      color: isActive
+          ? activeColor.withValues(alpha: 0.25)
+          : const Color(0xFF161B26).withValues(alpha: 0.55),
+      borderRadius: BorderRadius.circular(30),
+      border: Border.all(
+        color: isActive ? activeColor : Colors.white.withValues(alpha: 0.14),
+        width: isActive ? 1.5 : 1.0,
+      ),
+      boxShadow: isActive
+          ? [
+              BoxShadow(
+                color: activeColor.withValues(alpha: 0.3),
+                blurRadius: 14,
+                spreadRadius: 1,
+              ),
+            ]
+          : [],
     );
   }
 
@@ -122,7 +179,7 @@ class AppTheme {
       border: Border.all(color: color, width: 1.5),
       boxShadow: [
         BoxShadow(
-          color: color.withOpacity(0.35),
+          color: color.withValues(alpha: 0.35),
           blurRadius: 18,
           spreadRadius: 1,
         ),
