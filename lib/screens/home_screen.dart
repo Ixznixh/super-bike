@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final isDesktop = screenWidth > 900;
 
     return Scaffold(
-      backgroundColor: AppTheme.background,
+      backgroundColor: const Color(0xFF090B0F),
       body: Stack(
         children: [
           CustomScrollView(
