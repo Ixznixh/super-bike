@@ -23,17 +23,16 @@ class FirestoreService {
     await _bikesRef.doc(bike.id).set(bike.toMap());
   }
 
-  // Sync and Seed All 50 Flagship Superbikes to Firebase Firestore
-  Future<void> syncAllBikesToFirebase() async {
-    try {
-      final batch = _db.batch();
-      for (var bike in SuperbikeData.initialBikes) {
-        batch.set(_bikesRef.doc(bike.id), bike.toMap(), SetOptions(merge: true));
-      }
-      await batch.commit();
-    } catch (e) {
-      // Log debug info if offline or rule restriction
-      print('Firestore sync info: $e');
-    }
+  // Sync and Seed All 50 Flagship Superbikes to Firebase Firestore asynchronously
+  void syncAllBikesToFirebase() {
+    Future.microtask(() async {
+      try {
+        final batch = _db.batch();
+        for (var bike in SuperbikeData.initialBikes) {
+          batch.set(_bikesRef.doc(bike.id), bike.toMap(), SetOptions(merge: true));
+        }
+        await batch.commit().timeout(const Duration(seconds: 3));
+      } catch (_) {}
+    });
   }
 }

@@ -8,11 +8,11 @@ class AuthService {
 
   User? get currentUser => _auth.currentUser;
 
-  // Sign In with Google via Firebase Auth Provider Popup
   Future<UserCredential> signInWithGoogle() async {
     final GoogleAuthProvider googleProvider = GoogleAuthProvider();
     googleProvider.addScope('email');
     googleProvider.addScope('profile');
+    googleProvider.setCustomParameters({'prompt': 'select_account'});
     return await _auth.signInWithPopup(googleProvider);
   }
 

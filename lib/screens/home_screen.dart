@@ -52,15 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
     // Listen to Firestore real-time cloud bikes stream
     try {
       _bikesSubscription = _firestoreService.bikesStream.listen((firestoreBikes) {
-        if (mounted) {
-          // Sort by ID to preserve 1 to 50 ranking order
+        if (mounted && firestoreBikes.isNotEmpty) {
           firestoreBikes.sort((a, b) => a.id.compareTo(b.id));
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              setState(() {
-                cloudBikes = firestoreBikes;
-              });
-            }
+          setState(() {
+            cloudBikes = firestoreBikes;
           });
         }
       }, onError: (err) {
