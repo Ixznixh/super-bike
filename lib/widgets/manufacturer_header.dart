@@ -62,47 +62,71 @@ class ManufacturerHeader extends StatelessWidget {
                 ],
               ),
 
-              // Right utility menu (Only Auth button)
-              InkWell(
-                onTap: currentUser == null ? onLoginTap : onLogoutTap,
-                borderRadius: BorderRadius.circular(4),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isMobile ? 8 : 14,
-                    vertical: isMobile ? 4 : 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: currentUser == null ? AppTheme.triumphRed : const Color(0xFF1E293B),
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(
-                      color: currentUser == null ? AppTheme.triumphRed : AppTheme.electricCyan,
-                      width: 1,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+              // Right utility menu (India Country Selector + Auth button)
+              Row(
+                children: [
+                  // Country Selector
+                  Row(
                     children: [
-                      Icon(
-                        currentUser == null ? Icons.login_rounded : Icons.person_rounded,
-                        size: isMobile ? 11 : 13,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 6),
+                      const Icon(Icons.location_on_outlined, color: Colors.white70, size: 12),
+                      const SizedBox(width: 3),
                       Text(
-                        currentUser == null
-                            ? 'LOG IN / REGISTER'
-                            : (currentUser!.email?.split('@').first.toUpperCase() ?? 'MY GARAGE'),
+                        'INDIA 🇮🇳',
                         style: TextStyle(
                           fontFamily: 'Orbitron',
-                          fontSize: isMobile ? 9 : 11,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 0.8,
-                          color: Colors.white,
+                          fontSize: isMobile ? 9 : 10,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white.withValues(alpha: 0.9),
                         ),
                       ),
+                      const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white70, size: 14),
                     ],
                   ),
-                ),
+                  SizedBox(width: isMobile ? 10 : 16),
+
+                  // User Auth Pill Button
+                  InkWell(
+                    onTap: currentUser == null ? onLoginTap : onLogoutTap,
+                    borderRadius: BorderRadius.circular(4),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 8 : 14,
+                        vertical: isMobile ? 4 : 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: currentUser == null ? AppTheme.triumphRed : const Color(0xFF1E293B),
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                          color: currentUser == null ? AppTheme.triumphRed : AppTheme.electricCyan,
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            currentUser == null ? Icons.login_rounded : Icons.person_rounded,
+                            size: isMobile ? 11 : 13,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            currentUser == null
+                                ? 'LOG IN / REGISTER'
+                                : (currentUser!.email?.split('@').first.toUpperCase() ?? 'MY GARAGE'),
+                            style: TextStyle(
+                              fontFamily: 'Orbitron',
+                              fontSize: isMobile ? 9 : 11,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.8,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
