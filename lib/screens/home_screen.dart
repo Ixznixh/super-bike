@@ -9,6 +9,7 @@ import '../theme/app_theme.dart';
 import '../widgets/auth_dialog.dart';
 import '../widgets/floating_concierge_button.dart';
 import '../widgets/hero_carousel_banner.dart';
+import '../widgets/manufacturer_footer.dart';
 import '../widgets/manufacturer_header.dart';
 import '../widgets/spec_comparison_modal.dart';
 import 'bike_detail_screen.dart';
@@ -570,8 +571,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-          ],
-        ),
+
+          // Official Manufacturer Portal Footer
+          SliverToBoxAdapter(
+            child: ManufacturerFooter(
+              onNavSelect: (section) {},
+            ),
+          ),
+        ],
+      ),
 
         // Floating WhatsApp & Test Ride Concierge Button
         FloatingConciergeButton(

@@ -28,9 +28,11 @@ class ManufacturerHeader extends StatelessWidget {
         // Upper Utility Bar (Location, Dealer, Finance, Auth)
         Container(
           color: const Color(0xFF090B0F),
-          padding: EdgeInsets.symmetric(
-            horizontal: isMobile ? 12 : 24,
-            vertical: 6,
+          padding: EdgeInsets.fromLTRB(
+            isMobile ? 12 : 24,
+            MediaQuery.of(context).padding.top > 0 ? MediaQuery.of(context).padding.top + 4 : 6,
+            isMobile ? 12 : 24,
+            6,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

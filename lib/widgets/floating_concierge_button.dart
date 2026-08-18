@@ -21,9 +21,13 @@ class FloatingConciergeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
     return Positioned(
-      bottom: 24,
-      right: 24,
+      bottom: isMobile ? (16 + bottomPadding) : 24,
+      right: isMobile ? 12 : 24,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -33,7 +37,10 @@ class FloatingConciergeButton extends StatelessWidget {
             onTap: _openWhatsApp,
             borderRadius: BorderRadius.circular(30),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 12 : 16,
+                vertical: isMobile ? 8 : 10,
+              ),
               decoration: BoxDecoration(
                 color: AppTheme.neonGreen,
                 borderRadius: BorderRadius.circular(30),
@@ -45,16 +52,16 @@ class FloatingConciergeButton extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.chat_bubble_rounded, color: Colors.white, size: 20),
-                  SizedBox(width: 8),
+                  Icon(Icons.chat_bubble_rounded, color: Colors.white, size: isMobile ? 16 : 20),
+                  SizedBox(width: isMobile ? 6 : 8),
                   Text(
                     'WhatsApp',
                     style: TextStyle(
                       fontFamily: 'Inter',
-                      fontSize: 13,
+                      fontSize: isMobile ? 11 : 13,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -63,14 +70,17 @@ class FloatingConciergeButton extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: isMobile ? 8 : 10),
 
           // Test Ride Floating Button
           InkWell(
             onTap: onRequestTestRide,
             borderRadius: BorderRadius.circular(30),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 12 : 16,
+                vertical: isMobile ? 8 : 10,
+              ),
               decoration: BoxDecoration(
                 color: const Color(0xFF10141D),
                 borderRadius: BorderRadius.circular(30),
@@ -83,16 +93,16 @@ class FloatingConciergeButton extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.two_wheeler_rounded, color: AppTheme.triumphRed, size: 20),
-                  SizedBox(width: 8),
+                  Icon(Icons.two_wheeler_rounded, color: AppTheme.triumphRed, size: isMobile ? 16 : 20),
+                  SizedBox(width: isMobile ? 6 : 8),
                   Text(
                     'Book Test Ride',
                     style: TextStyle(
                       fontFamily: 'Orbitron',
-                      fontSize: 11,
+                      fontSize: isMobile ? 9 : 11,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 0.8,
                       color: Colors.white,
