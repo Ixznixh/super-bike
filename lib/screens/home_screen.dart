@@ -235,23 +235,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: TextField(
                               controller: _searchController,
                               onChanged: (val) => setState(() => searchQuery = val),
-                              style: const TextStyle(color: Colors.white, fontFamily: 'Rajdhani'),
+                              style: const TextStyle(color: Colors.white, fontFamily: 'Inter'),
                               decoration: InputDecoration(
                                 hintText: 'Search by model name, brand, or community specs...',
-                                hintStyle: const TextStyle(color: Color(0xFF64748B)),
-                                prefixIcon: const Icon(Icons.search, color: AppTheme.triumphRed),
+                                hintStyle: const TextStyle(color: Color(0xFF64748B), fontFamily: 'Inter', fontSize: 13),
+                                prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFF64748B)),
                                 filled: true,
-                                fillColor: const Color(0xFF161A23),
+                                fillColor: Colors.white.withValues(alpha: 0.04),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  borderSide: const BorderSide(color: Color(0xFF2D3548)),
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.12)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  borderSide: const BorderSide(color: Color(0xFF2D3548)),
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.12)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(color: AppTheme.triumphRed),
                                 ),
                               ),
@@ -265,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 foregroundColor: AppTheme.vividGold,
                                 side: const BorderSide(color: AppTheme.vividGold, width: 1.2),
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                               ),
                               icon: const Icon(Icons.compare_arrows_rounded, size: 18),
                               label: const Text(
@@ -311,13 +312,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 selected: isSelected,
                                 selectedColor: AppTheme.triumphRed,
-                                backgroundColor: const Color(0xFF161A23),
+                                backgroundColor: Colors.white.withValues(alpha: 0.04),
                                 side: BorderSide(
                                   color: isSelected
                                       ? AppTheme.triumphRed
-                                      : (isLockedForGuest ? const Color(0xFF1E293B) : const Color(0xFF2D3548)),
+                                      : (isLockedForGuest ? const Color(0xFF1E293B) : Colors.white.withValues(alpha: 0.12)),
                                 ),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                 onSelected: (selected) {
                                   if (selected) _onSelectBrand(brand);
                                 },
@@ -588,7 +589,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBikeCard(Superbike bike) {
     return Container(
       decoration: AppTheme.liquidGlassDecoration(
-        fillColor: const Color(0xFF141923).withValues(alpha: 0.65),
+        fillColor: Colors.white.withValues(alpha: 0.04),
         borderColor: Colors.white.withValues(alpha: 0.16),
         borderRadius: 20,
       ),
@@ -625,7 +626,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [Colors.transparent, const Color(0xFF141923).withValues(alpha: 0.9)],
+                            colors: [Colors.transparent, Colors.black.withValues(alpha: 0.65)],
                           ),
                         ),
                       ),

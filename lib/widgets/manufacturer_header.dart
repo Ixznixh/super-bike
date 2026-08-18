@@ -28,7 +28,7 @@ class ManufacturerHeader extends StatelessWidget {
       children: [
         // Upper Utility Bar (Location, Dealer, Finance, Auth)
         Container(
-          color: const Color(0xFF090B0F),
+          color: Colors.black.withValues(alpha: 0.25),
           padding: EdgeInsets.fromLTRB(
             isMobile ? 12 : 24,
             MediaQuery.of(context).padding.top > 0 ? MediaQuery.of(context).padding.top + 4 : 6,
@@ -129,27 +129,25 @@ class ManufacturerHeader extends StatelessWidget {
           ),
         ),
 
-        // Main iOS Liquid Glass Navigation Bar
-        Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: isMobile ? 8 : 16,
-            vertical: 6,
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isMobile ? 12 : 24,
-                  vertical: isMobile ? 10 : 14,
+        // Main Transparent iOS Liquid Glass Navigation Bar (Edge-to-Edge Full Width)
+        ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 12 : 24,
+                vertical: isMobile ? 10 : 14,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.04),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.12),
+                    width: 1.0,
+                  ),
                 ),
-                decoration: AppTheme.liquidGlassDecoration(
-                  fillColor: const Color(0xFF10141D).withValues(alpha: 0.75),
-                  borderColor: Colors.white.withValues(alpha: 0.18),
-                  borderRadius: 20,
-                ),
-                child: Row(
+              ),
+              child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
               // Brand Logo & Title
@@ -240,8 +238,7 @@ class ManufacturerHeader extends StatelessWidget {
         ),
       ),
     ),
-  ),
-],
+  ],
 );
 }
 

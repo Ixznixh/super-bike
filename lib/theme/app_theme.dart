@@ -120,7 +120,7 @@ class AppTheme {
     double glowOpacity = 0.25,
   }) {
     return BoxDecoration(
-      color: fillColor ?? const Color(0xFF141923).withValues(alpha: 0.65),
+      color: fillColor ?? Colors.white.withValues(alpha: 0.05),
       borderRadius: BorderRadius.circular(borderRadius),
       border: Border.all(
         color: borderColor ?? Colors.white.withValues(alpha: 0.16),
@@ -128,9 +128,9 @@ class AppTheme {
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.45),
-          blurRadius: 24,
-          offset: const Offset(0, 10),
+          color: Colors.black.withValues(alpha: 0.35),
+          blurRadius: 20,
+          offset: const Offset(0, 8),
         ),
         if (borderColor != null)
           BoxShadow(
