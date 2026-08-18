@@ -181,6 +181,13 @@ class Superbike {
   final String engineNoteDescription;
   final String? uploaderEmail;
 
+  String get displayTitle {
+    if (name.toLowerCase().startsWith(brand.toLowerCase())) {
+      return name;
+    }
+    return '$brand $name';
+  }
+
   Superbike({
     required this.id,
     required this.name,

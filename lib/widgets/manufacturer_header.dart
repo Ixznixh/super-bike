@@ -20,6 +20,7 @@ class ManufacturerHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth > 900;
+    final isMobile = screenWidth < 600;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -27,7 +28,10 @@ class ManufacturerHeader extends StatelessWidget {
         // Upper Utility Bar (Location, Dealer, Finance, Auth)
         Container(
           color: const Color(0xFF090B0F),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 12 : 24,
+            vertical: 6,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -42,21 +46,21 @@ class ManufacturerHeader extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 6),
                   Text(
-                    'OFFICIAL MOTORCYCLE PORTAL',
+                    isMobile ? 'PORTAL' : 'OFFICIAL MOTORCYCLE PORTAL',
                     style: TextStyle(
                       fontFamily: 'Orbitron',
-                      fontSize: 10,
+                      fontSize: isMobile ? 9 : 10,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2,
+                      letterSpacing: isMobile ? 0.8 : 1.2,
                       color: Colors.white.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
               ),
 
-              // Right utility menu
+              // Right utility menu & Auth button
               Row(
                 children: [
                   if (isDesktop) ...[
@@ -93,7 +97,10 @@ class ManufacturerHeader extends StatelessWidget {
                     onTap: currentUser == null ? onLoginTap : onLogoutTap,
                     borderRadius: BorderRadius.circular(4),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 8 : 12,
+                        vertical: isMobile ? 4 : 5,
+                      ),
                       decoration: BoxDecoration(
                         color: currentUser == null ? AppTheme.triumphRed : const Color(0xFF1E293B),
                         borderRadius: BorderRadius.circular(4),
@@ -107,19 +114,19 @@ class ManufacturerHeader extends StatelessWidget {
                         children: [
                           Icon(
                             currentUser == null ? Icons.login_rounded : Icons.person_rounded,
-                            size: 13,
+                            size: isMobile ? 11 : 13,
                             color: Colors.white,
                           ),
-                          const SizedBox(width: 6),
+                          const SizedBox(width: 4),
                           Text(
                             currentUser == null
-                                ? 'LOG IN / REGISTER'
+                                ? (isMobile ? 'LOG IN' : 'LOG IN / REGISTER')
                                 : (currentUser!.email?.split('@').first.toUpperCase() ?? 'MY GARAGE'),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Orbitron',
-                              fontSize: 10,
+                              fontSize: isMobile ? 9 : 10,
                               fontWeight: FontWeight.w900,
-                              letterSpacing: 0.8,
+                              letterSpacing: 0.6,
                               color: Colors.white,
                             ),
                           ),
@@ -136,47 +143,61 @@ class ManufacturerHeader extends StatelessWidget {
         // Main Navigation Bar with Logo & Sections
         Container(
           color: const Color(0xFF10141D),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 12 : 24,
+            vertical: isMobile ? 10 : 14,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Brand Logo & Title
-              InkWell(
-                onTap: () => onNavSelect('HOME'),
-                child: Row(
-                  children: [
-                    const Icon(Icons.two_wheeler_rounded, color: AppTheme.triumphRed, size: 32),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'GARAGE OF VELOCITY',
-                          style: TextStyle(
-                            fontFamily: 'Orbitron',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
-                            letterSpacing: 2.0,
-                          ),
+              Flexible(
+                child: InkWell(
+                  onTap: () => onNavSelect('HOME'),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.two_wheeler_rounded,
+                        color: AppTheme.triumphRed,
+                        size: isMobile ? 24 : 32,
+                      ),
+                      SizedBox(width: isMobile ? 8 : 12),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'GARAGE OF VELOCITY',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'Orbitron',
+                                fontSize: isMobile ? 13 : 18,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                                letterSpacing: isMobile ? 1.0 : 2.0,
+                              ),
+                            ),
+                            Text(
+                              'FOR THE RIDE OF A LIFETIME',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'Orbitron',
+                                fontSize: isMobile ? 7 : 9,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.triumphRed,
+                                letterSpacing: isMobile ? 1.0 : 1.8,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'FOR THE RIDE OF A LIFETIME',
-                          style: TextStyle(
-                            fontFamily: 'Orbitron',
-                            fontSize: 9,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.triumphRed,
-                            letterSpacing: 1.8,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
-              // Main Nav Items (Desktop)
+              // Main Nav Items (Desktop) or Mobile Menu Button
               if (isDesktop)
                 Row(
                   children: [
@@ -186,6 +207,30 @@ class ManufacturerHeader extends StatelessWidget {
                     _buildNavItem('RACING', false, () => onNavSelect('RACING')),
                     _buildNavItem('OWNERS', false, () => onNavSelect('OWNERS')),
                     _buildNavItem('DISCOVER', false, () => onNavSelect('DISCOVER')),
+                  ],
+                )
+              else
+                PopupMenuButton<String>(
+                  icon: const Icon(Icons.menu_rounded, color: Colors.white, size: 22),
+                  color: const Color(0xFF10141D),
+                  onSelected: onNavSelect,
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 'MOTORCYCLES',
+                      child: Text('MOTORCYCLES', style: TextStyle(color: Colors.white, fontFamily: 'Orbitron', fontSize: 12)),
+                    ),
+                    const PopupMenuItem(
+                      value: 'SUPERBIKES',
+                      child: Text('SUPERBIKES', style: TextStyle(color: Colors.white, fontFamily: 'Orbitron', fontSize: 12)),
+                    ),
+                    const PopupMenuItem(
+                      value: 'SPECS',
+                      child: Text('TELEMETRY & SPECS', style: TextStyle(color: Colors.white, fontFamily: 'Orbitron', fontSize: 12)),
+                    ),
+                    const PopupMenuItem(
+                      value: 'RACING',
+                      child: Text('RACING', style: TextStyle(color: Colors.white, fontFamily: 'Orbitron', fontSize: 12)),
+                    ),
                   ],
                 ),
             ],

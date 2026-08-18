@@ -335,24 +335,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-          // Garage Grid Title
+          // Garage Grid Title & Unlock Pill
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 12,
+                runSpacing: 10,
                 children: [
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(width: 4, height: 18, color: AppTheme.neonRed),
+                      Container(width: 4, height: 18, color: AppTheme.triumphRed),
                       const SizedBox(width: 8),
                       Text(
                         currentUser == null
-                            ? 'TOP 5 SUPERBIKES PREVIEW (5 OF 50)'
+                            ? (screenWidth < 600 ? 'TOP 5 PREVIEW' : 'TOP 5 SUPERBIKES PREVIEW (5 OF 50)')
                             : 'SUPERBIKE GARAGE (${filteredBikes.length} BIKES)',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Orbitron',
-                          fontSize: 16,
+                          fontSize: screenWidth < 600 ? 14 : 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -363,20 +367,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     InkWell(
                       onTap: _openAuthDialog,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
                           color: AppTheme.electricCyan.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: AppTheme.electricCyan, width: 1),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.lock_rounded, size: 12, color: AppTheme.electricCyan),
-                            SizedBox(width: 4),
+                            const Icon(Icons.lock_rounded, size: 12, color: AppTheme.electricCyan),
+                            const SizedBox(width: 4),
                             Text(
-                              'LOG IN TO UNLOCK ALL 50',
-                              style: TextStyle(
+                              screenWidth < 600 ? 'UNLOCK ALL 50' : 'LOG IN TO UNLOCK ALL 50',
+                              style: const TextStyle(
                                 fontFamily: 'Orbitron',
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
@@ -389,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   else
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                         color: AppTheme.neonGreen.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(12),
@@ -486,7 +490,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisCount: isDesktop ? 3 : (screenWidth > 600 ? 2 : 1),
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
-                  childAspectRatio: isDesktop ? 0.85 : 0.88,
+                  childAspectRatio: isDesktop ? 0.85 : (screenWidth < 600 ? 1.05 : 0.88),
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
@@ -650,7 +654,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    bike.name.toUpperCase(),
+                    bike.displayTitle.toUpperCase(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
